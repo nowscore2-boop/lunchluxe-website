@@ -1,0 +1,444 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta
+      name="description"
+      content="Discover LunchLuxe, a premium vegetarian meal subscription in Bhubaneswar. Thoughtfully prepared meals and monthly plans."
+    />
+    <meta name="theme-color" content="#faf6e8" />
+    <title>LunchLuxe — Elevated meals. Effortless days.</title>
+    <script>
+      document.documentElement.classList.add("js");
+      try {
+        if (/[?&]intro=1\b/.test(location.search) || !sessionStorage.getItem("lunchluxe-intro-seen")) {
+          document.documentElement.classList.add("intro-active");
+        }
+      } catch (error) { /* storage blocked: skip the intro */ }
+    </script>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Playfair+Display:ital,wght@0,500;0,600;1,500;1,600&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="styles.css?v=29" />
+    <link rel="stylesheet" href="enhance.css?v=4" />
+    <link rel="stylesheet" href="chatbot.css?v=5" />
+    <link rel="stylesheet" href="intro.css?v=5" />
+    <script src="menu.js?v=1" defer></script>
+    <script src="script.js?v=25" defer></script>
+    <script src="enhance.js?v=2" defer></script>
+    <script src="chatbot.js?v=5" defer></script>
+    <script src="intro.js?v=1" defer></script>
+  </head>
+  <body>
+    <div class="scroll-progress" aria-hidden="true"><span></span></div>
+
+    <header class="site-header">
+      <a class="brand" href="#home" aria-label="LunchLuxe home">
+        <img class="brand-logo" src="assets/lunchluxe-logo.png" alt="LunchLuxe logo" />
+      </a>
+      <button class="menu-toggle" type="button" aria-label="Open navigation" aria-expanded="false">
+        <span></span><span></span><span></span>
+      </button>
+      <nav class="main-nav" aria-label="Main navigation">
+        <a class="is-active" href="#home">Home</a>
+        <a href="#menu">Our Menu</a>
+        <a href="#how-it-works">How It Works</a>
+        <a href="#plans">Meal Plans</a>
+        <a href="#addons">Add-ons</a>
+        <a href="#contact">Contact</a>
+      </nav>
+      <div class="header-actions">
+        <span class="city-select"><span aria-hidden="true">📍</span> Bhubaneswar</span>
+        <a class="button button-green button-small" href="login.html">Order Now <span aria-hidden="true">→</span></a>
+      </div>
+    </header>
+
+    <main>
+      <!-- HERO -->
+      <section class="hero" id="home" aria-labelledby="hero-heading">
+        <div class="hero-glow" aria-hidden="true"></div>
+        <div class="container hero-inner">
+          <div class="hero-copy">
+            <p class="eyebrow hero-eyebrow"><span class="dot" aria-hidden="true"></span> Premium vegetarian meals · Bhubaneswar</p>
+            <h1 class="hero-title" id="hero-heading">
+              <span class="line"><span style="--i:0">Artisanal meals,</span></span>
+              <span class="line"><span style="--i:1">delivered to</span></span>
+              <span class="line"><span style="--i:2"><em>your desk.</em><svg class="scribble" viewBox="0 0 300 20" preserveAspectRatio="none" aria-hidden="true"><path d="M4 14 C 70 4, 150 4, 296 10" /></svg></span></span>
+            </h1>
+            <p class="hero-lead"><mark class="hl">Freshly prepared.</mark> <mark class="hl">Thoughtfully packed.</mark> <mark class="hl">Right on time.</mark> A <strong>premium vegetarian meal subscription</strong> for workdays and everyday routines.</p>
+            <div class="hero-ctas">
+              <a class="button button-green button-lg" href="#plans">Explore Meal Plans <span aria-hidden="true">→</span></a>
+              <a class="button button-ghost button-lg" href="#menu">See this week’s menu</a>
+            </div>
+            <ul class="hero-stats" aria-label="LunchLuxe at a glance">
+              <li><strong data-count="3">3</strong><span>meal moments<br />to choose from</span></li>
+              <li><strong><span data-count="100">100</span>%</strong><span>vegetarian<br />meal plans</span></li>
+              <li><strong data-count="30">30</strong><span>day monthly<br />plans</span></li>
+            </ul>
+          </div>
+
+          <div class="hero-visual">
+            <div class="hero-blob" data-parallax="-0.08" aria-hidden="true"></div>
+            <div class="hero-frame" data-parallax="0.05">
+              <img src="assets/lunchluxe-hero.png" alt="A LunchLuxe steel tiffin surrounded by bowls of rice, dal, sabzi and rotis" />
+            </div>
+            <div class="hero-badge" aria-hidden="true">
+              <svg viewBox="0 0 120 120">
+                <defs><path id="badge-circle" d="M60,60 m-44,0 a44,44 0 1,1 88,0 a44,44 0 1,1 -88,0" /></defs>
+                <text><textPath href="#badge-circle">HOMELY FOOD • EVERYDAY • HOMELY FOOD • EVERYDAY •</textPath></text>
+              </svg>
+              <span>🌿</span>
+            </div>
+            <div class="float-chip chip-1"><span class="chip-icon sun">☀</span><div><strong>Breakfast</strong><small>A thoughtful start</small></div></div>
+            <div class="float-chip chip-2"><span class="chip-icon leaf">🍛</span><div><strong>Lunch</strong><small>Everyday comfort</small></div></div>
+            <div class="float-chip chip-3"><span class="chip-icon moon">☾</span><div><strong>Dinner</strong><small>Made for your evening</small></div></div>
+          </div>
+        </div>
+        <a class="scroll-cue" href="#meals" aria-label="Scroll to today’s menu"><span></span></a>
+      </section>
+
+      <!-- MARQUEE -->
+      <section class="ribbon" aria-label="LunchLuxe promises and offers">
+        <div class="ribbon-track">
+          <div class="ribbon-set">
+            <span>Premium meal subscriptions</span><i aria-hidden="true">✦</i>
+            <span>Thoughtfully prepared</span><i aria-hidden="true">✦</i>
+            <span>Vegetarian choices</span><i aria-hidden="true">✦</i>
+            <span>Made for everyday routines</span><i aria-hidden="true">✦</i>
+            <span>Thoughtful meals, right on time</span><i aria-hidden="true">✦</i>
+          </div>
+          <div class="ribbon-set" aria-hidden="true">
+            <span>Premium meal subscriptions</span><i>✦</i>
+            <span>Thoughtfully prepared</span><i>✦</i>
+            <span>Vegetarian choices</span><i>✦</i>
+            <span>Made for everyday routines</span><i>✦</i>
+            <span>Thoughtful meals, right on time</span><i>✦</i>
+          </div>
+        </div>
+      </section>
+
+      <!-- FOOD GALLERY -->
+      <section class="food-gallery section" aria-labelledby="food-gallery-heading">
+        <div class="container">
+          <header class="section-head" data-reveal>
+            <p class="eyebrow">Fresh from the LunchLuxe kitchen</p>
+            <h2 id="food-gallery-heading">Real food for <em>real everyday moments.</em></h2>
+            <p>Colourful breakfasts, balanced thalis and comforting dinners—prepared to make every delivery feel fresh and familiar.</p>
+          </header>
+          <div class="food-carousel" data-food-carousel data-reveal>
+            <div class="food-carousel-viewport">
+              <div class="food-carousel-track">
+                <div class="food-collage" data-food-slide aria-label="Everyday favourites">
+                  <figure class="food-shot food-shot-hero"><img src="https://images.unsplash.com/photo-1547592180-85f173990554?auto=format&fit=crop&w=1200&q=88" alt="A colourful vegetarian grain bowl with seasonal vegetables" /><figcaption><strong>Seasonal lunch bowls</strong><span>Balanced, colourful and satisfying</span></figcaption></figure>
+                  <figure class="food-shot"><img src="https://images.unsplash.com/photo-1589301760014-d929f3979dbc?auto=format&fit=crop&w=800&q=88" alt="Soft idlis served with sambar and chutney" /><figcaption><strong>South Indian mornings</strong><span>Light starts, made fresh</span></figcaption></figure>
+                  <figure class="food-shot"><img src="https://images.unsplash.com/photo-1565557623262-b51c2513a641?auto=format&fit=crop&w=800&q=88" alt="Freshly cooked Indian curry in a serving bowl" /><figcaption><strong>Comforting curries</strong><span>Homestyle flavour</span></figcaption></figure>
+                  <figure class="food-shot food-shot-wide"><img src="https://images.unsplash.com/photo-1567188040759-fb8a883dc6d8?auto=format&fit=crop&w=1000&q=88" alt="Paneer tikka with peppers and fresh herbs" /><figcaption><strong>Premium specials</strong><span>Paneer, mushrooms and more</span></figcaption></figure>
+                </div>
+                <div class="food-collage" data-food-slide aria-label="Indian comfort food">
+                  <figure class="food-shot food-shot-wide"><img src="https://images.unsplash.com/photo-1565557623262-b51c2513a641?auto=format&fit=crop&w=1000&q=88" alt="Indian curry served with herbs" loading="lazy" /><figcaption><strong>Slow-cooked dinners</strong><span>Warm, familiar and full of flavour</span></figcaption></figure>
+                  <figure class="food-shot food-shot-hero"><img src="https://images.unsplash.com/photo-1567337710282-00832b415979?auto=format&fit=crop&w=1200&q=88" alt="Traditional Indian vegetarian thali" loading="lazy" /><figcaption><strong>Complete thalis</strong><span>A little bit of everything you love</span></figcaption></figure>
+                  <figure class="food-shot"><img src="https://images.unsplash.com/photo-1631452180519-c014fe946bc7?auto=format&fit=crop&w=800&q=88" alt="Indian paneer curry" loading="lazy" /><figcaption><strong>Paneer favourites</strong><span>Rich weekday specials</span></figcaption></figure>
+                  <figure class="food-shot"><img src="https://images.unsplash.com/photo-1601050690597-df0568f70950?auto=format&fit=crop&w=800&q=88" alt="Freshly prepared Indian samosas" loading="lazy" /><figcaption><strong>Thoughtful add-ons</strong><span>Something extra for the day</span></figcaption></figure>
+                </div>
+                <div class="food-collage" data-food-slide aria-label="Fresh and healthy meals">
+                  <figure class="food-shot food-shot-hero"><img src="https://images.unsplash.com/photo-1512621776951-a57141f2eefd?auto=format&fit=crop&w=1200&q=88" alt="Healthy vegetarian salad bowl with greens and grains" loading="lazy" /><figcaption><strong>Health-focused plates</strong><span>Fresh produce, thoughtful portions</span></figcaption></figure>
+                  <figure class="food-shot food-shot-wide"><img src="https://images.unsplash.com/photo-1543362906-acfc16c67564?auto=format&fit=crop&w=1000&q=88" alt="Fresh salad with seasonal vegetables" loading="lazy" /><figcaption><strong>Garden-fresh sides</strong><span>Crisp colour in every meal</span></figcaption></figure>
+                  <figure class="food-shot"><img src="https://images.unsplash.com/photo-1539136788836-5699e78bfc75?auto=format&fit=crop&w=800&q=88" alt="Vegetarian bowl with grains and greens" loading="lazy" /><figcaption><strong>Balanced bowls</strong><span>Made for busy afternoons</span></figcaption></figure>
+                  <figure class="food-shot"><img src="https://images.unsplash.com/photo-1490645935967-10de6ba17061?auto=format&fit=crop&w=800&q=88" alt="Healthy vegetarian meal ingredients" loading="lazy" /><figcaption><strong>Seasonal ingredients</strong><span>Chosen with everyday care</span></figcaption></figure>
+                </div>
+              </div>
+            </div>
+            <button class="food-carousel-arrow food-carousel-prev" type="button" aria-label="Previous food collage">←</button>
+            <button class="food-carousel-arrow food-carousel-next" type="button" aria-label="Next food collage">→</button>
+            <div class="food-carousel-dots" aria-label="Choose a food collage"></div>
+          </div>
+        </div>
+      </section>
+
+      <!-- A DAY WITH LUNCHLUXE -->
+      <section class="day section" id="meals" aria-labelledby="day-heading">
+        <div class="container">
+          <header class="section-head" data-reveal>
+            <p class="eyebrow">A day with LunchLuxe</p>
+            <h2 id="day-heading">Three meals. <em>One less thing</em> to worry about.</h2>
+            <p>From your first chai to your last bite at night — <mark class="hl">we follow your day so your kitchen doesn’t have to.</mark></p>
+          </header>
+
+          <div class="timeline">
+            <div class="timeline-track" aria-hidden="true"><span class="timeline-fill"></span></div>
+
+            <article class="moment">
+              <div class="moment-media" data-reveal="left">
+                <img src="https://images.unsplash.com/photo-1589301760014-d929f3979dbc?auto=format&fit=crop&w=900&q=80" alt="Soft idlis served as a homestyle vegetarian breakfast" loading="lazy" data-parallax-img />
+                <span class="moment-time">08:00 AM</span>
+              </div>
+              <div class="moment-node sun" aria-hidden="true">☀</div>
+              <div class="moment-copy" data-reveal="right">
+                <p class="eyebrow">Fresh start</p>
+                <h3>Breakfast</h3>
+                <p>Light, nourishing and ready when you are — <strong>traditional Indian breakfasts made fresh each morning.</strong></p>
+                <ul class="pill-list"><li>Traditional Indian breakfast</li><li>Light &amp; nutritious</li></ul>
+              </div>
+            </article>
+
+            <article class="moment moment-reverse">
+              <div class="moment-media" data-reveal="right">
+                <img src="https://images.unsplash.com/photo-1547592180-85f173990554?auto=format&fit=crop&w=900&q=80" alt="A wholesome bowl of vegetables and grains for lunch" loading="lazy" data-parallax-img />
+                <span class="moment-time">01:00 PM</span>
+              </div>
+              <div class="moment-node noon" aria-hidden="true">✺</div>
+              <div class="moment-copy" data-reveal="left">
+                <p class="eyebrow">Midday care</p>
+                <h3>Lunch</h3>
+                <p>Balanced, filling food for your busiest hours — <strong>seasonal vegetables, dal, rice and rotis</strong> done right.</p>
+                <ul class="pill-list"><li>Seasonal vegetables</li><li>Balanced nutrition</li></ul>
+              </div>
+            </article>
+
+            <article class="moment">
+              <div class="moment-media" data-reveal="left">
+                <img src="https://images.unsplash.com/photo-1565557623262-b51c2513a641?auto=format&fit=crop&w=900&q=80" alt="A comforting Indian curry served for dinner" loading="lazy" data-parallax-img />
+                <span class="moment-time">08:00 PM</span>
+              </div>
+              <div class="moment-node moon" aria-hidden="true">☾</div>
+              <div class="moment-copy" data-reveal="right">
+                <p class="eyebrow">Comfort time</p>
+                <h3>Dinner</h3>
+                <p><strong>Warm, homestyle comfort</strong> to end your day — the kind of meal that feels like someone was waiting for you.</p>
+                <ul class="pill-list"><li>Homestyle comfort</li><li>Freshly cooked</li></ul>
+              </div>
+            </article>
+          </div>
+        </div>
+      </section>
+
+      <!-- HOW IT WORKS -->
+      <section class="process section" id="how-it-works" aria-labelledby="process-heading">
+        <div class="container">
+          <header class="section-head section-head-light" data-reveal>
+            <p class="eyebrow">How it works</p>
+            <h2 id="process-heading">From our kitchen <em>to your table</em> in three simple steps.</h2>
+          </header>
+
+          <div class="steps">
+            <svg class="steps-path" viewBox="0 0 1000 120" preserveAspectRatio="none" aria-hidden="true">
+              <path d="M40 80 C 220 -10, 380 150, 500 60 S 800 -10, 960 70" />
+            </svg>
+
+            <article class="step" data-reveal style="--delay:.05s">
+              <div class="step-visual phone">
+                <span class="phone-top">LunchLuxe</span>
+                <span class="phone-label">Choose a plan</span>
+                <span class="phone-card is-picked"></span>
+                <span class="phone-card"></span>
+                <span class="phone-card"></span>
+              </div>
+              <span class="step-num">01</span>
+              <h3>Choose your plan</h3>
+              <p>Pick <strong>Regular, Premium or Elite</strong> — whatever fits your appetite and lifestyle.</p>
+            </article>
+
+            <article class="step" data-reveal style="--delay:.2s">
+              <div class="step-visual"><img src="https://images.unsplash.com/photo-1556911220-e15b29be8c8f?auto=format&fit=crop&w=500&q=80" alt="A meal being freshly prepared in the kitchen" loading="lazy" /></div>
+              <span class="step-num">02</span>
+              <h3>Review the meal details</h3>
+              <p>Explore plan inclusions and meal descriptions, then ask us about ingredients or dietary preferences.</p>
+            </article>
+
+            <article class="step" data-reveal style="--delay:.35s">
+              <div class="step-visual"><img src="https://images.unsplash.com/photo-1606787366850-de6330128bfc?auto=format&fit=crop&w=500&q=80" alt="Freshly prepared food ready to be delivered" loading="lazy" /></div>
+              <span class="step-num">03</span>
+              <h3>Confirm your delivery</h3>
+              <p>Message our team to <strong>check delivery coverage</strong> and time windows for your area.</p>
+            </article>
+          </div>
+        </div>
+      </section>
+
+      <!-- PLANS -->
+      <section class="plans section" id="plans" aria-labelledby="plans-heading">
+        <div class="container">
+          <header class="section-head" data-reveal>
+            <p class="eyebrow">Meal plans</p>
+            <h2 id="plans-heading">Pick the plan that <em>fits your life.</em></h2>
+            <p>Compare monthly plans and meal details. <mark class="hl">All plans include breakfast, lunch &amp; dinner for 30 days.</mark></p>
+          </header>
+
+          <div class="plan-grid">
+            <article class="plan-card" data-reveal style="--delay:.05s" data-tilt>
+              <div class="plan-media"><img src="https://images.unsplash.com/photo-1589301760014-d929f3979dbc?auto=format&fit=crop&w=700&q=80" alt="" loading="lazy" /></div>
+              <div class="plan-body">
+                <div class="plan-top"><span class="plan-icon">🌿</span><div><h3>Regular</h3><p>Simple. Wholesome. Everyday.</p></div></div>
+                <p class="plan-price"><strong>₹6,300</strong><span>/ month</span></p>
+                <p class="plan-per-day">That’s about <b>₹210 a day</b> for 3 meals</p>
+                <ul class="check-list"><li>Homestyle vegetarian meals</li><li>Seasonal vegetables</li><li>Balanced nutrition</li></ul>
+                <a class="button button-outline" href="plan.html?plan=regular">Get started <span aria-hidden="true">→</span></a>
+              </div>
+            </article>
+
+            <article class="plan-card plan-featured" data-reveal style="--delay:.15s" data-tilt>
+              <span class="plan-badge">★ Most popular</span>
+              <div class="plan-media"><img src="https://images.unsplash.com/photo-1567188040759-fb8a883dc6d8?auto=format&fit=crop&w=700&q=80" alt="" loading="lazy" /></div>
+              <div class="plan-body">
+                <div class="plan-top"><span class="plan-icon">👑</span><div><h3>Premium</h3><p>More variety. More goodness.</p></div></div>
+                <p class="plan-price"><strong>₹8,970</strong><span>/ month</span></p>
+                <p class="plan-per-day">That’s about <b>₹299 a day</b> for 3 meals</p>
+                <ul class="check-list"><li>Premium dishes</li><li>Paneer &amp; mushroom specials</li><li>Greater variety</li></ul>
+                <a class="button button-saffron" href="plan.html?plan=premium">Choose Premium <span aria-hidden="true">→</span></a>
+              </div>
+            </article>
+
+            <article class="plan-card" data-reveal style="--delay:.25s" data-tilt>
+              <div class="plan-media"><img src="https://images.unsplash.com/photo-1565557623262-b51c2513a641?auto=format&fit=crop&w=700&q=80" alt="" loading="lazy" /></div>
+              <div class="plan-body">
+                <div class="plan-top"><span class="plan-icon">✦</span><div><h3>Elite</h3><p>For your health. For your goals.</p></div></div>
+                <p class="plan-price"><strong>₹12,570</strong><span>/ month</span></p>
+                <p class="plan-per-day">That’s about <b>₹419 a day</b> for 3 meals</p>
+                <ul class="check-list"><li>Health-focused meals</li><li>Higher protein options</li><li>Low-oil preparation</li></ul>
+                <a class="button button-outline" href="plan.html?plan=elite">Choose Elite <span aria-hidden="true">→</span></a>
+              </div>
+            </article>
+          </div>
+          <p class="pricing-note">Prices and inclusions are illustrative. Please confirm current plan details and delivery availability with our team before ordering.</p>
+        </div>
+      </section>
+
+      <!-- WEEKLY MENU -->
+      <section class="weekly-menu section" id="menu" aria-labelledby="menu-heading">
+        <div class="container">
+          <header class="section-head" data-reveal>
+            <p class="eyebrow">Day-wise menu</p>
+            <h2 id="menu-heading">A week of <em>Indian favourites.</em></h2>
+            <p>Pick a plan and a day to see what’s on the table — from poha and dosa to Odia dalma and chhena poda.</p>
+          </header>
+          <div id="home-weekly-menu" data-weekly-menu></div>
+        </div>
+      </section>
+
+      <!-- ADD-ONS -->
+      <section class="addons section" id="addons" aria-labelledby="addons-heading">
+        <div class="container">
+          <header class="section-head" data-reveal>
+            <p class="eyebrow">Add-ons</p>
+            <h2 id="addons-heading">Top up your tiffin <em>with everyday essentials.</em></h2>
+            <p>Add packaged drinks, dairy, snacks and treats to each delivery, then send them to us with your plan enquiry.</p>
+          </header>
+          <div data-addons></div>
+          <div class="addon-summary">
+            <div class="addon-summary-text" data-addon-summary aria-live="polite"></div>
+            <a class="button button-lg" data-menu-enquiry href="https://wa.me/91911414115">Send on WhatsApp <span aria-hidden="true">→</span></a>
+          </div>
+          <p class="pricing-note">Add-on prices are indicative. Brands, pack sizes and availability are confirmed on WhatsApp before delivery.</p>
+        </div>
+      </section>
+
+      <!-- DELIVERY -->
+      <section class="delivery" aria-labelledby="delivery-heading">
+        <div class="delivery-bg" data-parallax="0.12" aria-hidden="true"></div>
+        <div class="container delivery-inner">
+          <div class="delivery-copy" data-reveal="left">
+            <p class="eyebrow">Delivery</p>
+            <h2 id="delivery-heading">Bhubaneswar, <em>we’re bringing home to you.</em></h2>
+            <p>Delivery coverage and time windows vary by area. <mark class="hl">Message us to confirm availability for your PIN code.</mark></p>
+            <a class="button button-saffron button-lg" href="https://wa.me/91911414115?text=Hi%20LunchLuxe%2C%20please%20confirm%20delivery%20availability%20for%20my%20area.">Check availability <span aria-hidden="true">→</span></a>
+          </div>
+          <div class="route-card" data-reveal="right" aria-label="How your meal travels to you">
+            <div class="route-row"><span class="route-icon">🍳</span><div><strong>Cooked fresh</strong><small>In our kitchen, same day</small></div></div>
+            <div class="route-row"><span class="route-icon">🛵</span><div><strong>On the way</strong><small>Packed warm, sealed with care</small></div></div>
+            <div class="route-row"><span class="route-icon">🏡</span><div><strong>At your door</strong><small>On time, every single day</small></div></div>
+            <span class="route-line" aria-hidden="true"><span class="route-dot"></span></span>
+          </div>
+        </div>
+      </section>
+
+      <!-- WHY -->
+      <section class="why section" id="about" aria-labelledby="why-heading">
+        <div class="container why-grid">
+          <div class="why-feature" data-reveal="left">
+            <img src="https://images.unsplash.com/photo-1512621776951-a57141f2eefd?auto=format&fit=crop&w=1000&q=80" alt="A fresh, colourful vegetarian bowl" loading="lazy" data-parallax-img />
+            <div class="why-feature-copy">
+              <p class="eyebrow">Why LunchLuxe</p>
+              <h2 id="why-heading">Not just a meal. <em>A little bit of home.</em></h2>
+            </div>
+          </div>
+          <div class="why-item" data-reveal style="--delay:.05s"><span class="why-icon">🥣</span><h3>Consistent taste</h3><p>The same comforting flavour, day after day.</p></div>
+          <div class="why-item" data-reveal style="--delay:.12s"><span class="why-icon">🥬</span><h3>Seasonal vegetables</h3><p>Fresh produce chosen for the season.</p></div>
+          <div class="why-item" data-reveal style="--delay:.19s"><span class="why-icon">🍲</span><h3>Variety every day</h3><p>A rotating menu so you never get bored.</p></div>
+          <div class="why-item" data-reveal style="--delay:.26s"><span class="why-icon">🤍</span><h3>Prepared with care</h3><p>Cooked like it’s for our own family.</p></div>
+          <div class="why-item why-item-wide" data-reveal style="--delay:.33s"><span class="why-icon">↔</span><h3>Plan options</h3><p>Compare three monthly tiers and choose the one that suits your everyday routine.</p></div>
+        </div>
+      </section>
+
+      <!-- BRAND PROMISE -->
+      <section class="brand-values section" aria-labelledby="values-heading">
+        <div class="container">
+          <header class="section-head" data-reveal>
+            <p class="eyebrow">The LunchLuxe difference</p>
+            <h2 id="values-heading">Everyday dining, <em>made exceptional.</em></h2>
+            <p>A <strong>premium meal subscription</strong>—not just a tiffin delivery service. Thoughtful details make everyday dining feel special.</p>
+          </header>
+          <div class="value-grid">
+            <article class="value-card" data-reveal style="--delay:.05s">
+              <span class="value-number">01</span>
+              <h3>Craft</h3>
+              <p>Thoughtfully prepared vegetarian meals with a polished, restaurant-inspired touch.</p>
+            </article>
+            <article class="value-card" data-reveal style="--delay:.15s">
+              <span class="value-number">02</span>
+              <h3>Wellness</h3>
+              <p>Balanced choices and meal-plan options designed around everyday preferences.</p>
+            </article>
+            <article class="value-card" data-reveal style="--delay:.25s">
+              <span class="value-number">03</span>
+              <h3>Convenience</h3>
+              <p>Simple monthly plans, with delivery coverage confirmed for your area before you order.</p>
+            </article>
+          </div>
+        </div>
+      </section>
+
+      <!-- CTA -->
+      <section class="cta" aria-labelledby="cta-heading">
+        <div class="container">
+          <div class="cta-card" data-reveal="zoom">
+            <span class="cta-ring r1" aria-hidden="true"></span><span class="cta-ring r2" aria-hidden="true"></span>
+            <p class="eyebrow">Your everyday, made homely</p>
+            <h2 id="cta-heading">Ready for a little <em>bit of home?</em></h2>
+            <p>Choose a plan today and let us take care of <mark class="hl">breakfast, lunch and dinner.</mark></p>
+            <a class="button button-saffron button-lg" href="https://wa.me/91911414115?text=Hi%20LunchLuxe%2C%20I%E2%80%99d%20like%20to%20discuss%20your%20meal%20plans.">Enquire on WhatsApp <span aria-hidden="true">→</span></a>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <footer class="site-footer" id="contact">
+      <div class="footer-inner">
+        <div class="footer-about">
+          <a class="footer-brand" href="#home" aria-label="LunchLuxe home"><img src="assets/lunchluxe-logo.png" alt="LunchLuxe logo" /></a>
+          <p class="footer-tagline">Premium vegetarian meals made for workdays, family routines and everything in between.</p>
+          <span class="footer-location"><span aria-hidden="true">📍</span> Bhubaneswar, Odisha</span>
+        </div>
+        <nav class="footer-column footer-nav" aria-label="Footer navigation">
+          <strong>Explore</strong>
+          <a href="#menu">Our Menu</a><a href="#plans">Meal Plans</a><a href="#how-it-works">How It Works</a><a href="#addons">Add-ons</a>
+        </nav>
+        <div class="footer-column footer-contact" aria-label="Order enquiries">
+          <strong>Get in touch</strong>
+          <a href="https://wa.me/91911414115?text=Hi%20LunchLuxe%2C%20I%E2%80%99d%20like%20to%20enquire%20about%20an%20order.">WhatsApp: +91 911414115</a>
+          <a href="mailto:Orders@lunchluxe.com">Orders@lunchluxe.com</a>
+          <a href="#" data-open-chat>Chat with us</a><a href="#" data-open-ticket>Raise a support ticket</a>
+        </div>
+        <div class="footer-column footer-order">
+          <strong>Ready for easier days?</strong>
+          <p>Choose a monthly plan and save your place in our order queue.</p>
+          <a class="footer-cta" href="login.html">Choose a plan <span aria-hidden="true">→</span></a>
+        </div>
+      </div>
+      <div class="footer-bottom"><span>© <span id="year"></span> LunchLuxe. Homely Food. Everyday.</span><span>100% vegetarian · Thoughtfully prepared</span></div>
+    </footer>
+  </body>
+</html>

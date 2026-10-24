@@ -1,0 +1,52 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content="LunchLuxe checkout availability and waiting-list status." />
+    <title>Checkout — LunchLuxe</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Playfair+Display:wght@500;600&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="checkout.css?v=3" />
+    <script src="checkout.js?v=2" defer></script>
+  </head>
+  <body>
+    <header class="checkout-header">
+      <a class="checkout-brand" href="index.html" aria-label="LunchLuxe home"><img src="assets/lunchluxe-logo.png" alt="LunchLuxe logo" /></a>
+      <div class="checkout-header-actions"><a data-change-plan href="checkout-plans.html">Change plan</a></div>
+    </header>
+    <main class="checkout-shell" data-waiting-page>
+      <ol class="checkout-steps" aria-label="Checkout progress">
+        <li class="is-done"><span>✓</span><strong>Login</strong></li><li class="is-done"><span>✓</span><strong>Choose plan</strong></li><li class="is-active"><span>3</span><strong>Checkout</strong></li>
+      </ol>
+      <section class="queue-layout">
+        <div class="pause-card">
+          <span class="pause-icon" aria-hidden="true">⏸</span>
+          <p class="eyebrow">Checkout update</p>
+          <h1>Checkout is currently paused.</h1>
+          <p class="pause-lead">We’re experiencing a high volume of orders and have temporarily paused new payments so every meal receives the care it deserves.</p>
+          <div class="waiting-ticket" aria-live="polite">
+            <span>Your waiting number</span>
+            <strong>#<span data-waiting-number>---</span></strong>
+            <small>We’ve saved your place in the queue.</small>
+          </div>
+          <p class="queue-note">Please keep this number for reference. Your selected plan is saved in this browser, and you can return later to check availability.</p>
+          <div class="queue-actions">
+            <a class="checkout-button" href="index.html">Return to homepage</a>
+            <a class="checkout-button secondary" data-change-plan href="checkout-plans.html">Change plan</a>
+          </div>
+        </div>
+        <aside class="order-summary" aria-label="Saved plan summary">
+          <img class="summary-food" src="https://images.unsplash.com/photo-1547592180-85f173990554?auto=format&fit=crop&w=700&q=85" alt="Colourful vegetarian meal bowl" />
+          <h2>Your saved selection</h2>
+          <div class="summary-line"><span>Selected plan</span><strong data-plan-name>Premium Plan</strong></div>
+          <div class="summary-line"><span>Duration</span><strong>30 days</strong></div>
+          <div class="summary-line"><span>Meals</span><strong>Breakfast, lunch &amp; dinner</strong></div>
+          <div class="summary-total"><span>Plan total</span><strong data-plan-price>₹8,970</strong></div>
+          <p class="availability-note">No payment has been requested or processed.</p>
+        </aside>
+      </section>
+    </main>
+  </body>
+</html>

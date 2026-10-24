@@ -1,0 +1,40 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content="Choose a LunchLuxe monthly meal subscription." />
+    <title>Choose Your Plan — LunchLuxe</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Playfair+Display:wght@500;600&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="checkout.css?v=3" />
+    <script src="checkout.js?v=2" defer></script>
+  </head>
+  <body>
+    <header class="checkout-header">
+      <a class="checkout-brand" href="index.html" aria-label="LunchLuxe home"><img src="assets/lunchluxe-logo.png" alt="LunchLuxe logo" /></a>
+      <div class="checkout-header-actions"><a href="index.html#plans">View full plan details</a></div>
+    </header>
+    <main class="checkout-shell">
+      <ol class="checkout-steps" aria-label="Checkout progress">
+        <li class="is-done"><span>✓</span><strong>Login</strong></li><li class="is-active"><span>2</span><strong>Choose plan</strong></li><li><span>3</span><strong>Checkout</strong></li>
+      </ol>
+      <header class="checkout-heading"><p class="account-pill" data-user-greeting>Choose a plan to continue.</p><h1>Pick your everyday meal plan</h1><p>All plans include breakfast, lunch and dinner for 30 days. You can change your selection before checkout.</p></header>
+      <section class="plan-choice-grid" data-plan-grid aria-label="Available meal plans">
+        <article class="checkout-plan" data-plan="regular">
+          <img src="https://images.unsplash.com/photo-1589301760014-d929f3979dbc?auto=format&fit=crop&w=900&q=85" alt="Fresh idli breakfast with chutney" />
+          <div class="checkout-plan-body"><div class="checkout-plan-top"><h2>Regular</h2><span class="checkout-plan-tag">Everyday</span></div><p class="checkout-plan-price">₹6,300 <span>/ month</span></p><p class="checkout-plan-copy">Simple homestyle meals with seasonal vegetables and balanced nutrition.</p><ul><li>Three meals every day</li><li>Traditional vegetarian menu</li><li>Fresh daily preparation</li></ul><button class="checkout-button" type="button">Choose Regular →</button></div>
+        </article>
+        <article class="checkout-plan" data-plan="premium">
+          <img src="https://images.unsplash.com/photo-1567188040759-fb8a883dc6d8?auto=format&fit=crop&w=900&q=85" alt="Paneer tikka and vegetables served as a premium Indian meal" />
+          <div class="checkout-plan-body"><div class="checkout-plan-top"><h2>Premium</h2><span class="checkout-plan-tag">Most popular</span></div><p class="checkout-plan-price">₹8,970 <span>/ month</span></p><p class="checkout-plan-copy">More variety with paneer and mushroom specials throughout the week.</p><ul><li>Everything in Regular</li><li>Premium daily specials</li><li>More menu variety</li></ul><button class="checkout-button" type="button">Choose Premium →</button></div>
+        </article>
+        <article class="checkout-plan" data-plan="elite">
+          <img src="https://images.unsplash.com/photo-1512621776951-a57141f2eefd?auto=format&fit=crop&w=900&q=85" alt="Colourful healthy vegetarian bowl with fresh vegetables" />
+          <div class="checkout-plan-body"><div class="checkout-plan-top"><h2>Elite</h2><span class="checkout-plan-tag">Health focused</span></div><p class="checkout-plan-price">₹12,570 <span>/ month</span></p><p class="checkout-plan-copy">Higher-protein, low-oil meals with thoughtful sides and extras.</p><ul><li>Everything in Premium</li><li>Higher-protein options</li><li>Raita and a daily sweet</li></ul><button class="checkout-button" type="button">Choose Elite →</button></div>
+        </article>
+      </section>
+    </main>
+  </body>
+</html>

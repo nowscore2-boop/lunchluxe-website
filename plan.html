@@ -1,0 +1,135 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta
+      name="description"
+      content="Explore LunchLuxe monthly vegetarian meal plans, plan details and Bhubaneswar delivery availability."
+    />
+    <meta name="theme-color" content="#faf6e8" />
+    <title>LunchLuxe Meal Plan</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Playfair+Display:ital,wght@0,500;0,600;1,500;1,600&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="styles.css?v=29" />
+    <link rel="stylesheet" href="plan-page.css?v=3" />
+    <link rel="stylesheet" href="enhance.css?v=4" />
+    <link rel="stylesheet" href="chatbot.css?v=5" />
+    <script src="menu.js?v=1" defer></script>
+    <script src="plan-page.js?v=3" defer></script>
+    <script src="enhance.js?v=2" defer></script>
+    <script src="chatbot.js?v=5" defer></script>
+  </head>
+  <body class="package-page">
+    <header class="site-header" id="home">
+      <a class="brand" href="index.html#home" aria-label="LunchLuxe home">
+        <img class="brand-logo" src="assets/lunchluxe-logo.png" alt="LunchLuxe logo" />
+      </a>
+      <button class="menu-toggle" type="button" aria-label="Open navigation" aria-expanded="false">
+        <span></span><span></span><span></span>
+      </button>
+      <nav class="main-nav" aria-label="Main navigation">
+        <a href="index.html#home">Home</a>
+        <a href="index.html#meals">Our Menu</a>
+        <a class="is-active" href="index.html#plans">Meal Plans</a>
+        <a href="index.html#how-it-works">How It Works</a>
+        <a href="index.html#about">About Us</a>
+        <a href="index.html#contact">Contact</a>
+      </nav>
+      <div class="header-actions">
+        <span class="city-select"><span aria-hidden="true">📍</span> Bhubaneswar</span>
+        <a class="button button-green button-small" href="login.html">Order Now <span aria-hidden="true">→</span></a>
+      </div>
+    </header>
+
+    <main>
+      <nav class="package-breadcrumb" aria-label="Breadcrumb">
+        <a href="index.html#plans">Meal Plans</a><span aria-hidden="true">/</span><span class="current-plan-name">Plan details</span>
+      </nav>
+
+      <section class="package-hero" aria-labelledby="package-heading">
+        <div class="package-hero-photo" role="img" aria-label="A table filled with freshly prepared Indian vegetarian meals"></div>
+        <div class="package-hero-copy">
+          <p class="eyebrow">LUNCHLUXE MONTHLY MEAL PLAN</p>
+          <h1 id="package-heading"><span class="package-name">Meal</span> <span class="package-highlight">Plan</span></h1>
+          <p class="package-tagline"></p>
+          <p class="package-description"></p>
+          <p class="package-price"><strong></strong><span>/ month</span></p>
+          <div class="package-benefits"></div>
+          <div class="package-actions">
+            <a class="button button-green subscribe-button" href="#subscribe">Subscribe to this plan <span aria-hidden="true">→</span></a>
+            <span class="subscription-note"><span aria-hidden="true">▦</span> Monthly Subscription<br />(30 Days)</span>
+          </div>
+        </div>
+        <p class="package-stamp"></p>
+      </section>
+
+      <section class="inclusions-section section-wrap" id="inclusions" aria-labelledby="inclusions-heading">
+        <div class="inclusions-heading">
+          <div><h2 id="inclusions-heading">What’s Included</h2><p>Meal details and prices are illustrative; confirm current inclusions, pricing and delivery availability before ordering.</p></div>
+          <div class="monthly-total"><span>Illustrative plan total</span><strong></strong><span>/ month</span><span class="billing-detail">Confirm current price before ordering</span></div>
+        </div>
+        <div class="package-meals"></div>
+      </section>
+
+      <section class="package-perks-section section-wrap" aria-label="LunchLuxe meal plan benefits">
+        <div class="package-perks"></div>
+      </section>
+
+      <section class="plan-menu-section section-wrap" id="weekly-menu" aria-labelledby="weekly-menu-heading">
+        <div class="plan-section-head">
+          <p class="eyebrow">DAY-WISE INDIAN MENU</p>
+          <h2 id="weekly-menu-heading">This week’s menu</h2>
+          <p>Breakfast, lunch and dinner for every day of the week. Items tagged Premium or Elite come with those plans.</p>
+        </div>
+        <div id="plan-weekly-menu" data-weekly-menu></div>
+      </section>
+
+      <section class="plan-addons-section section-wrap" id="addons" aria-labelledby="plan-addons-heading">
+        <div class="plan-section-head">
+          <p class="eyebrow">OPTIONAL ADD-ONS</p>
+          <h2 id="plan-addons-heading">Add everyday essentials</h2>
+          <p>Pick packaged drinks, dairy, snacks or treats per delivery. Your selection is added to the WhatsApp enquiry.</p>
+        </div>
+        <div data-addons></div>
+        <div class="addon-summary">
+          <div class="addon-summary-text" data-addon-summary aria-live="polite"></div>
+          <a class="button button-lg contact-button addon-enquiry" href="https://wa.me/91911414115">Send on WhatsApp <span aria-hidden="true">→</span></a>
+        </div>
+        <p class="pricing-note">Add-on prices are indicative. Brands, pack sizes and availability are confirmed on WhatsApp before delivery.</p>
+      </section>
+
+      <section class="other-plans section-wrap" aria-labelledby="other-plans-heading">
+        <div>
+          <p class="eyebrow">FIND YOUR EVERYDAY</p>
+          <h2 id="other-plans-heading">Not quite your plan?</h2>
+          <p>Compare the monthly options and find a fit for your routine.</p>
+        </div>
+        <div class="other-plan-links"></div>
+      </section>
+
+      <section class="subscribe-strip section-wrap" id="subscribe">
+        <div><p class="eyebrow">YOUR EVERYDAY, MADE THOUGHTFUL</p><h2>Ready to find your plan?</h2><p>Ask us to confirm current pricing, inclusions and delivery availability for your area.</p></div>
+        <a class="button button-green contact-button" href="https://wa.me/91911414115">Ask about this plan <span aria-hidden="true">→</span></a>
+      </section>
+    </main>
+
+    <footer class="site-footer">
+      <div class="footer-inner">
+        <div class="footer-about">
+          <a class="footer-brand" href="index.html#home" aria-label="LunchLuxe home"><img src="assets/lunchluxe-logo.png" alt="LunchLuxe logo" /></a>
+          <p class="footer-tagline">Premium vegetarian meals made for workdays, family routines and everything in between.</p>
+          <span class="footer-location"><span aria-hidden="true">📍</span> Bhubaneswar, Odisha</span>
+        </div>
+        <nav class="footer-column footer-nav" aria-label="Footer navigation"><strong>Explore</strong><a href="index.html#menu">Our Menu</a><a href="index.html#plans">Meal Plans</a><a href="index.html#how-it-works">How It Works</a><a href="index.html#addons">Add-ons</a></nav>
+        <div class="footer-column footer-contact" aria-label="Order enquiries"><strong>Get in touch</strong><a href="https://wa.me/91911414115">WhatsApp: +91 911414115</a><a href="mailto:Orders@lunchluxe.com">Orders@lunchluxe.com</a><a href="#" data-open-chat>Chat with us</a><a href="#" data-open-ticket>Raise a support ticket</a></div>
+        <div class="footer-column footer-order"><strong>Ready for easier days?</strong><p>Choose a monthly plan and save your place in our order queue.</p><a class="footer-cta" href="login.html">Choose a plan <span aria-hidden="true">→</span></a></div>
+      </div>
+      <div class="footer-bottom"><span>© <span id="year"></span> LunchLuxe. Homely Food. Everyday.</span><span>100% vegetarian · Thoughtfully prepared</span></div>
+    </footer>
+  </body>
+</html>
