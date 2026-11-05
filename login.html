@@ -3,14 +3,16 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta name="description" content="Sign in to LunchLuxe and choose your monthly meal plan." />
+    <meta name="robots" content="noindex, follow" />
+    <meta name="description" content="Contact LunchLuxe to ask about vegetarian meal plans and delivery in Bhubaneswar." />
     <link rel="icon" type="image/png" href="assets/lunchluxe-logo.png" />
-    <title>Sign In — LunchLuxe</title>
+    <title>Plan Enquiry — LunchLuxe</title>
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Playfair+Display:wght@500;600&display=swap" rel="stylesheet" />
     <link rel="stylesheet" href="checkout.css?v=3" />
-    <script src="checkout.js?v=2" defer></script>
+    <script src="menu.js?v=1" defer></script>
+    <script src="checkout.js?v=3" defer></script>
   </head>
   <body>
     <header class="checkout-header">
@@ -19,22 +21,17 @@
     </header>
     <main class="checkout-shell">
       <ol class="checkout-steps" aria-label="Checkout progress">
-        <li class="is-active"><span>1</span><strong>Login</strong></li><li><span>2</span><strong>Choose plan</strong></li><li><span>3</span><strong>Checkout</strong></li>
+        <li class="is-active"><span>1</span><strong>Plan enquiry</strong></li><li><span>2</span><strong>Confirm details</strong></li>
       </ol>
       <section class="auth-layout">
         <div class="auth-photo" role="img" aria-label="A colourful vegetarian meal bowl">
           <div class="auth-photo-copy"><p>Welcome to LunchLuxe</p><h1>Your everyday meals, thoughtfully taken care of.</h1></div>
         </div>
         <div class="checkout-panel">
-          <h1>Sign in to continue</h1>
-          <p>Access your meal-plan preferences and continue to checkout.</p>
-          <form class="checkout-form" data-login-form novalidate>
-            <div class="field"><label for="email">Email address</label><input id="email" name="email" type="email" autocomplete="email" placeholder="you@example.com" required /></div>
-            <div class="field"><label for="password">Password</label><input id="password" name="password" type="password" autocomplete="current-password" placeholder="Enter your password" minlength="6" required /></div>
-            <p class="form-error" role="alert"></p>
-            <button class="checkout-button" type="submit">Continue to meal plans <span aria-hidden="true">→</span></button>
-          </form>
-          <p class="secure-note">Your sign-in session is kept in this browser.</p>
+          <h1>Ask about your meal plan</h1>
+          <p>Our team can confirm current pricing, delivery coverage and how to get started.</p>
+          <a class="checkout-button" data-plan-enquiry href="https://wa.me/91911414115">Continue in WhatsApp <span aria-hidden="true">→</span></a>
+          <p class="secure-note">No account or payment is collected on this website.</p>
         </div>
       </section>
     </main>

@@ -5,11 +5,77 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta
       name="description"
-      content="Discover LunchLuxe, a premium vegetarian meal subscription in Bhubaneswar. Thoughtfully prepared meals and monthly plans."
+      content="Order fresh vegetarian tiffin and monthly meal plans in Bhubaneswar. LunchLuxe delivers thoughtfully prepared breakfast, lunch and dinner for every day."
     />
+    <link rel="canonical" href="https://lunchluxe.com/" />
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content="LunchLuxe" />
+    <meta property="og:title" content="Vegetarian Tiffin & Meal Plans in Bhubaneswar | LunchLuxe" />
+    <meta property="og:description" content="Fresh vegetarian breakfast, lunch and dinner, thoughtfully prepared and delivered in Bhubaneswar." />
+    <meta property="og:url" content="https://lunchluxe.com/" />
+    <meta property="og:image" content="https://lunchluxe.com/assets/lunchluxe-hero.png" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="Vegetarian Tiffin & Meal Plans in Bhubaneswar | LunchLuxe" />
+    <meta name="twitter:description" content="Fresh vegetarian breakfast, lunch and dinner, thoughtfully prepared and delivered in Bhubaneswar." />
+    <meta name="twitter:image" content="https://lunchluxe.com/assets/lunchluxe-hero.png" />
     <meta name="theme-color" content="#faf6e8" />
     <link rel="icon" type="image/png" href="assets/lunchluxe-logo.png" />
-    <title>LunchLuxe — Elevated meals. Effortless days.</title>
+    <title>Vegetarian Tiffin &amp; Meal Plans in Bhubaneswar | LunchLuxe</title>
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "FoodEstablishment",
+        "@id": "https://lunchluxe.com/#business",
+        "name": "LunchLuxe",
+        "url": "https://lunchluxe.com/",
+        "image": "https://lunchluxe.com/assets/lunchluxe-hero.png",
+        "logo": "https://lunchluxe.com/assets/lunchluxe-logo.png",
+        "description": "Fresh vegetarian tiffin and monthly meal plans with breakfast, lunch and dinner delivered in Bhubaneswar.",
+        "email": "Orders@lunchluxe.com",
+        "servesCuisine": "Vegetarian",
+        "hasOfferCatalog": {
+          "@type": "OfferCatalog",
+          "name": "Monthly vegetarian meal plans",
+          "itemListElement": [
+            { "@type": "Offer", "url": "https://lunchluxe.com/plan.html?plan=regular", "itemOffered": { "@type": "Service", "name": "Regular Vegetarian Meal Plan" } },
+            { "@type": "Offer", "url": "https://lunchluxe.com/plan.html?plan=premium", "itemOffered": { "@type": "Service", "name": "Premium Vegetarian Meal Plan" } },
+            { "@type": "Offer", "url": "https://lunchluxe.com/plan.html?plan=elite", "itemOffered": { "@type": "Service", "name": "Elite Vegetarian Meal Plan" } }
+          ]
+        },
+        "areaServed": {
+          "@type": "City",
+          "name": "Bhubaneswar"
+        }
+      }
+    </script>
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "FAQPage",
+        "mainEntity": [
+          {
+            "@type": "Question",
+            "name": "What does a LunchLuxe monthly meal plan include?",
+            "acceptedAnswer": { "@type": "Answer", "text": "LunchLuxe monthly plans are described as including breakfast, lunch and dinner for 30 days. Menus and additional dishes vary by plan; review each plan page for details." }
+          },
+          {
+            "@type": "Question",
+            "name": "Where does LunchLuxe deliver?",
+            "acceptedAnswer": { "@type": "Answer", "text": "LunchLuxe serves Bhubaneswar. Delivery coverage and time windows vary by area; contact the team to confirm availability for your PIN code." }
+          },
+          {
+            "@type": "Question",
+            "name": "How much do LunchLuxe meal plans cost?",
+            "acceptedAnswer": { "@type": "Answer", "text": "The site displays illustrative monthly prices for Regular, Premium and Elite plans. Prices and inclusions can change, so confirm current details with LunchLuxe before ordering." }
+          },
+          {
+            "@type": "Question",
+            "name": "How can I enquire about a LunchLuxe plan?",
+            "acceptedAnswer": { "@type": "Answer", "text": "Choose Regular, Premium or Elite and use the enquiry option on its plan page to contact LunchLuxe. The website does not create an order or process payment." }
+          }
+        ]
+      }
+    </script>
     <script>
       document.documentElement.classList.add("js");
       try {
@@ -24,7 +90,7 @@
       href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Playfair+Display:ital,wght@0,500;0,600;1,500;1,600&display=swap"
       rel="stylesheet"
     />
-    <link rel="stylesheet" href="styles.css?v=29" />
+    <link rel="stylesheet" href="styles.css?v=31" />
     <link rel="stylesheet" href="enhance.css?v=4" />
     <link rel="stylesheet" href="chatbot.css?v=5" />
     <link rel="stylesheet" href="intro.css?v=5" />
@@ -54,7 +120,7 @@
       </nav>
       <div class="header-actions">
         <span class="city-select"><span aria-hidden="true">📍</span> Bhubaneswar</span>
-        <a class="button button-green button-small" href="login.html">Order Now <span aria-hidden="true">→</span></a>
+        <a class="button button-green button-small" href="#plans">View Plans <span aria-hidden="true">→</span></a>
       </div>
     </header>
 
@@ -66,9 +132,9 @@
           <div class="hero-copy">
             <p class="eyebrow hero-eyebrow"><span class="dot" aria-hidden="true"></span> Premium vegetarian meals · Bhubaneswar</p>
             <h1 class="hero-title" id="hero-heading">
-              <span class="line"><span style="--i:0">Artisanal meals,</span></span>
-              <span class="line"><span style="--i:1">delivered to</span></span>
-              <span class="line"><span style="--i:2"><em>your desk.</em><svg class="scribble" viewBox="0 0 300 20" preserveAspectRatio="none" aria-hidden="true"><path d="M4 14 C 70 4, 150 4, 296 10" /></svg></span></span>
+              <span class="line"><span style="--i:0">Vegetarian tiffin,</span></span>
+              <span class="line"><span style="--i:1">delivered in</span></span>
+              <span class="line"><span style="--i:2"><em>Bhubaneswar.</em><svg class="scribble" viewBox="0 0 300 20" preserveAspectRatio="none" aria-hidden="true"><path d="M4 14 C 70 4, 150 4, 296 10" /></svg></span></span>
             </h1>
             <p class="hero-lead"><mark class="hl">Freshly prepared.</mark> <mark class="hl">Thoughtfully packed.</mark> <mark class="hl">Right on time.</mark> A <strong>premium vegetarian meal subscription</strong> for workdays and everyday routines.</p>
             <div class="hero-ctas">
@@ -402,6 +468,34 @@
         </div>
       </section>
 
+      <section class="faq section" id="faq" aria-labelledby="faq-heading">
+        <div class="container">
+          <header class="section-head" data-reveal>
+            <p class="eyebrow">LunchLuxe questions</p>
+            <h2 id="faq-heading">Vegetarian meal plans in <em>Bhubaneswar.</em></h2>
+            <p>Plan details, delivery coverage and pricing at a glance.</p>
+          </header>
+          <div class="faq-list" data-reveal>
+            <details>
+              <summary>What does a LunchLuxe monthly meal plan include?</summary>
+              <p>Monthly plans are described as including breakfast, lunch and dinner for 30 days. Menus and additional dishes vary by plan; review the <a href="#plans">plan details</a>.</p>
+            </details>
+            <details>
+              <summary>Where does LunchLuxe deliver?</summary>
+              <p>LunchLuxe serves Bhubaneswar. Delivery coverage and time windows vary by area, so contact the team to confirm availability for your PIN code.</p>
+            </details>
+            <details>
+              <summary>How much do LunchLuxe meal plans cost?</summary>
+              <p>The site displays illustrative monthly prices for Regular, Premium and Elite plans. Prices and inclusions can change; confirm current details with LunchLuxe before ordering.</p>
+            </details>
+            <details>
+              <summary>How can I enquire about a LunchLuxe plan?</summary>
+              <p>Choose Regular, Premium or Elite and use the enquiry option on its plan page to contact LunchLuxe. The website does not create an order or process payment.</p>
+            </details>
+          </div>
+        </div>
+      </section>
+
       <!-- CTA -->
       <section class="cta" aria-labelledby="cta-heading">
         <div class="container">
@@ -435,8 +529,8 @@
         </div>
         <div class="footer-column footer-order">
           <strong>Ready for easier days?</strong>
-          <p>Choose a monthly plan and save your place in our order queue.</p>
-          <a class="footer-cta" href="login.html">Choose a plan <span aria-hidden="true">→</span></a>
+          <p>Ask our team about current plans, delivery coverage and availability.</p>
+          <a class="footer-cta" href="checkout-plans.html">Ask about a plan <span aria-hidden="true">→</span></a>
         </div>
       </div>
       <div class="footer-bottom"><span>© <span id="year"></span> LunchLuxe. Homely Food. Everyday.</span><span>100% vegetarian · Thoughtfully prepared</span></div>

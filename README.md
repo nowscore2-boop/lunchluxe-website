@@ -14,15 +14,15 @@ The mobile navigation and plan-page navigation work in the browser. Food photogr
 
 The supplied LunchLuxe logo is included locally at `assets/lunchluxe-logo.png` and used in the header and footer.
 
-## Checkout flow
+## Plan enquiries
 
-The static site includes a three-step customer checkout flow:
+The static site does not provide accounts or online payments. Visitors can:
 
-- `login.html` — customer sign-in
-- `checkout-plans.html` — Regular, Premium, and Elite plan selection
-- `payment.html` — high-order-volume pause notice with a persistent waiting number and saved plan summary
+- review Regular, Premium, and Elite plan details
+- choose a plan and open a prefilled WhatsApp enquiry to the LunchLuxe team
+- confirm current pricing, delivery coverage, and availability with the team
 
-The flow stores temporary selections in `sessionStorage` and the waiting number in `localStorage`. Authentication and payment processing can be connected when backend integrations are added.
+No order, account, payment, or queue position is created by the website.
 
 ## Enhancements & support assistant
 

@@ -152,7 +152,43 @@ if (!plan) {
 } else {
   document.body.classList.add(`package-${plan.accent}`);
   document.title = `${plan.title} — LunchLuxe`;
-  document.querySelector('meta[name="description"]').content = `${plan.title}: ${plan.description} Fresh daily tiffin delivery in Bhubaneswar.`;
+  const description = `${plan.title}: ${plan.description} Monthly vegetarian meal plan with breakfast, lunch and dinner in Bhubaneswar.`;
+  document.querySelector('meta[name="description"]').content = description;
+  const canonical = document.createElement("link");
+  canonical.rel = "canonical";
+  canonical.href = `https://lunchluxe.com/plan.html?plan=${planKey}`;
+  document.head.append(canonical);
+  document.querySelector('meta[property="og:title"]').content = `${plan.title} in Bhubaneswar | LunchLuxe`;
+  document.querySelector('meta[property="og:description"]').content = description;
+  document.querySelector('meta[property="og:url"]').content = canonical.href;
+  document.querySelector('meta[name="twitter:title"]').content = `${plan.title} in Bhubaneswar | LunchLuxe`;
+  document.querySelector('meta[name="twitter:description"]').content = description;
+  const structuredData = document.createElement("script");
+  structuredData.type = "application/ld+json";
+  structuredData.textContent = JSON.stringify({
+    "@context": "https://schema.org",
+    "@graph": [
+      {
+        "@type": "Service",
+        "@id": `${canonical.href}#service`,
+        "name": `${plan.title} - Vegetarian Meal Plan`,
+        "serviceType": "Monthly vegetarian meal plan",
+        "description": description,
+        "url": canonical.href,
+        "provider": { "@id": "https://lunchluxe.com/#business" },
+        "areaServed": { "@type": "City", "name": "Bhubaneswar" },
+      },
+      {
+        "@type": "BreadcrumbList",
+        "itemListElement": [
+          { "@type": "ListItem", "position": 1, "name": "Home", "item": "https://lunchluxe.com/" },
+          { "@type": "ListItem", "position": 2, "name": "Meal Plans", "item": "https://lunchluxe.com/#plans" },
+          { "@type": "ListItem", "position": 3, "name": plan.title, "item": canonical.href },
+        ],
+      },
+    ],
+  });
+  document.head.append(structuredData);
   document.querySelector(".package-breadcrumb .current-plan-name").textContent = plan.title;
   document.querySelector(".package-name").textContent = plan.type;
   document.querySelector(".package-highlight").textContent = plan.highlight;
@@ -168,11 +204,10 @@ if (!plan) {
   const updatePlanButtons = (selectedAddons = []) => {
     const addonLines = menuLib ? menuLib.addonMessageLines(selectedAddons) : [];
     const href = whatsappHref([...basePlanLines, ...addonLines, confirmLine].join("\n"));
-    const checkoutHref = `login.html?plan=${encodeURIComponent(planKey)}`;
     const count = selectedAddons.reduce((sum, item) => sum + item.qty, 0);
     const suffix = count ? ` + ${count} add-on${count > 1 ? "s" : ""}` : "";
-    setButton(document.querySelector(".subscribe-button"), `Continue with ${plan.type}`, checkoutHref);
-    setButton(document.querySelector(".subscribe-strip .contact-button"), `Choose ${plan.type} plan`, checkoutHref);
+    setButton(document.querySelector(".subscribe-button"), `Enquire about ${plan.type}`, href);
+    setButton(document.querySelector(".subscribe-strip .contact-button"), `Enquire about ${plan.type}`, href);
     setButton(document.querySelector(".addon-enquiry"), `Send ${plan.type}${suffix} on WhatsApp`, href);
   };
   updatePlanButtons();
@@ -221,7 +256,7 @@ if (!plan) {
       daily.textContent = `₹${meal.price} / day`;
       const monthly = document.createElement("p");
       monthly.className = "meal-monthly-price";
-      monthly.textContent = `₹${(meal.price * 30).toLocaleString("en-IN")} / month · (30 × 30 days)`;
+      monthly.textContent = `₹${(meal.price * 30).toLocaleString("en-IN")} / month · (₹${meal.price} × 30 days)`;
       mealName.append(name, daily, monthly);
       const icon = document.createElement("span");
       icon.className = `meal-period-icon ${meal.name.toLowerCase()}`;
