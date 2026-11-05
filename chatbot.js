@@ -342,6 +342,7 @@
       if (!category.value) problems.push(category);
       if (details.value.trim().length < 10) problems.push(details);
       ticketForm.querySelectorAll(".is-invalid").forEach((node) => node.classList.remove("is-invalid"));
+      error.textContent = "";
       if (problems.length) {
         problems.forEach((node) => node.classList.add("is-invalid"));
         error.textContent = "Please fill in the highlighted fields (description needs at least 10 characters).";

@@ -207,7 +207,7 @@ mark.hl.is-lit, html:not(.js) mark.hl { background-size: 100% 55%; }
   .header-actions .button { font-size: 12px; }
   .why-item p { font-size: 13.5px; }
   .section-head h2 em { white-space: normal; }
-  .to-top { bottom: 18px; left: 16px; }
+  .to-top { bottom: 90px; left: 16px; }
 }
 @media (max-width: 390px) {
   .hero-stats li { font-size: 10px; }
