@@ -1,9 +1,21 @@
 import test from "node:test";
 import assert from "node:assert/strict";
 import { randomBytes, scryptSync } from "node:crypto";
+import { spawnSync } from "node:child_process";
+import { fileURLToPath } from "node:url";
 import { verifyPassword } from "../app.js";
 import { date, InputError, validateCatalog } from "../validation.js";
 import { initialCatalog } from "./catalog-fixture.js";
+
+test("server can be loaded by CommonJS hosts without top-level await", { skip: !process.features.require_module }, () => {
+  const server = fileURLToPath(new URL("../server.js", import.meta.url));
+  const result = spawnSync(process.execPath, ["-e", "require(process.argv[1])", server], {
+    env: { ...process.env, DATABASE_URL: "", ADMIN_USERNAME: "", ADMIN_PASSWORD_HASH: "", PUBLIC_ORIGIN: "" },
+    encoding: "utf8",
+  });
+  assert.equal(result.status, 1);
+  assert.match(result.stderr, /DATABASE_URL, ADMIN_USERNAME, ADMIN_PASSWORD_HASH and PUBLIC_ORIGIN are required/);
+});
 
 test("existing catalog is valid and rejects inconsistent prices and duplicate add-ons", async () => {
   const catalog = await initialCatalog();

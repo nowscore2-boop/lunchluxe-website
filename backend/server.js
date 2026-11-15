@@ -8,7 +8,14 @@ if (!DATABASE_URL || !ADMIN_USERNAME || !ADMIN_PASSWORD_HASH || !PUBLIC_ORIGIN) 
 }
 if (!/^scrypt\$[a-f0-9]{32}\$[a-f0-9]{128}$/.test(ADMIN_PASSWORD_HASH)) throw new Error("ADMIN_PASSWORD_HASH is invalid.");
 const pool = new pg.Pool({ connectionString: DATABASE_URL });
-const catalog = await pool.query("SELECT 1 FROM luxe_catalog WHERE id = 1");
-if (!catalog.rowCount) throw new Error("Catalog is not initialized. Run the migration.");
-createApp(pool, { adminUsername: ADMIN_USERNAME, adminPasswordHash: ADMIN_PASSWORD_HASH, publicOrigin: PUBLIC_ORIGIN })
-  .listen(Number(PORT), () => console.log(`LunchLuxe API listening on port ${PORT}`));
+async function start() {
+  const catalog = await pool.query("SELECT 1 FROM luxe_catalog WHERE id = 1");
+  if (!catalog.rowCount) throw new Error("Catalog is not initialized. Run the migration.");
+  createApp(pool, { adminUsername: ADMIN_USERNAME, adminPasswordHash: ADMIN_PASSWORD_HASH, publicOrigin: PUBLIC_ORIGIN })
+    .listen(Number(PORT), () => console.log(`LunchLuxe API listening on port ${PORT}`));
+}
+start().catch((error) => {
+  console.error("LunchLuxe API failed to start:", error);
+  process.exitCode = 1;
+  pool.end().catch((closeError) => console.error("Failed to close database pool:", closeError));
+});
