@@ -12,6 +12,7 @@ import { initialCatalog } from "./catalog-fixture.js";
 test("API configuration enables the live site and local development only", () => {
   const source = readFileSync(new URL("../../api-config.js", import.meta.url), "utf8");
   for (const [origin, expected] of [
+    ["https://lunchluxe.com", "https://lunchluxe.com"],
     ["https://www.lunchluxe.com", "https://www.lunchluxe.com"],
     ["http://localhost:8000", "http://localhost:3000"],
     ["https://preview.example.com", ""],
