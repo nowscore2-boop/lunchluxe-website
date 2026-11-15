@@ -2,10 +2,25 @@ import test from "node:test";
 import assert from "node:assert/strict";
 import { randomBytes, scryptSync } from "node:crypto";
 import { spawnSync } from "node:child_process";
+import { readFileSync } from "node:fs";
 import { fileURLToPath } from "node:url";
+import vm from "node:vm";
 import { verifyPassword } from "../app.js";
 import { date, InputError, validateCatalog } from "../validation.js";
 import { initialCatalog } from "./catalog-fixture.js";
+
+test("API configuration enables the live site and local development only", () => {
+  const source = readFileSync(new URL("../../api-config.js", import.meta.url), "utf8");
+  for (const [origin, expected] of [
+    ["https://www.lunchluxe.com", "https://www.lunchluxe.com"],
+    ["http://localhost:8000", "http://localhost:3000"],
+    ["https://preview.example.com", ""],
+  ]) {
+    const context = { window: {}, location: { origin } };
+    vm.runInNewContext(source, context);
+    assert.equal(context.window.LUNCHLUXE_API_URL, expected);
+  }
+});
 
 test("server can be loaded by CommonJS hosts without top-level await", { skip: !process.features.require_module }, () => {
   const server = fileURLToPath(new URL("../server.js", import.meta.url));
