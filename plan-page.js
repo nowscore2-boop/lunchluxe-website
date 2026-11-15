@@ -1,3 +1,4 @@
+(async () => {
 const planCatalog = {
   regular: {
     title: "Regular Plan",
@@ -103,6 +104,8 @@ const planCatalog = {
   },
 };
 
+const currentCatalog = await window.LuxeCatalogReady;
+if (currentCatalog) Object.assign(planCatalog, currentCatalog.plans);
 const searchParams = new URLSearchParams(window.location.search);
 const planKey = searchParams.get("plan");
 const plan = planKey ? planCatalog[planKey] : undefined;
@@ -206,7 +209,7 @@ if (!plan) {
     const href = whatsappHref([...basePlanLines, ...addonLines, confirmLine].join("\n"));
     const count = selectedAddons.reduce((sum, item) => sum + item.qty, 0);
     const suffix = count ? ` + ${count} add-on${count > 1 ? "s" : ""}` : "";
-    setButton(document.querySelector(".subscribe-button"), `Enquire about ${plan.type}`, href);
+    setButton(document.querySelector(".subscribe-button"), currentCatalog ? `Request ${plan.type} plan` : `Enquire about ${plan.type}`, currentCatalog ? `order.html?plan=${planKey}` : href);
     setButton(document.querySelector(".subscribe-strip .contact-button"), `Enquire about ${plan.type}`, href);
     setButton(document.querySelector(".addon-enquiry"), `Send ${plan.type}${suffix} on WhatsApp`, href);
   };
@@ -332,3 +335,4 @@ mainNav.querySelectorAll("a").forEach((link) => {
 
 const year = document.querySelector("#year");
 if (year) year.textContent = String(new Date().getFullYear());
+})();

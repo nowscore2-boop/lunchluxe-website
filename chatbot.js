@@ -1,4 +1,5 @@
-(() => {
+(async () => {
+  const currentCatalog = await window.LuxeCatalogReady;
   const WHATSAPP = "91911414115";
   const EMAIL = "Orders@lunchluxe.com";
   const STORE_KEY = "lunchluxe-tickets";
@@ -8,6 +9,13 @@
     { key: "premium", name: "Premium", price: 8970, perDay: 299, icon: "👑", line: "Everything in Regular plus daily paneer / mushroom specials and more variety." },
     { key: "elite", name: "Elite", price: 12570, perDay: 419, icon: "✦", line: "Health-focused, higher-protein, low-oil meals with raita and a sweet." },
   ];
+  if (currentCatalog) PLANS.forEach((item) => {
+    const plan = currentCatalog.plans[item.key];
+    item.name = plan.type;
+    item.price = plan.price;
+    item.perDay = plan.price / 30;
+    item.line = plan.description;
+  });
   const CATEGORIES = ["Late / missed delivery", "Food quality or taste", "Wrong or missing item", "Billing / payment", "Pause, change or cancel plan", "Allergy or health concern", "Feedback / suggestion", "Other"];
   const PRIORITIES = [
     { value: "Low", hint: "Whenever convenient" },
@@ -226,7 +234,7 @@
     const dayIndex = (new Date().getDay() + 6) % 7;
     const day = menuLib.weeklyMenu[dayIndex];
     if (!day) return "Please check the **Day-wise menu** section on the home page.";
-    return `Here’s **${day.day}’s** menu (Regular plan):\n☀ **Breakfast:** ${day.breakfast.join(", ")}\n🍛 **Lunch:** ${day.lunch.join(", ")}\n☾ **Dinner:** ${day.dinner.join(", ")}\n👑 Premium adds **${day.premium}**.`;
+    return `Here’s **${day.day}’s** menu (${PLANS[0].name} plan):\n☀ **Breakfast:** ${day.breakfast.join(", ")}\n🍛 **Lunch:** ${day.lunch.join(", ")}\n☾ **Dinner:** ${day.dinner.join(", ")}\n👑 ${PLANS[1].name} adds **${day.premium}**.`;
   }
 
   const intents = [
@@ -240,9 +248,7 @@
       { label: "✉️ Email", href: mail("LunchLuxe enquiry", "Hi LunchLuxe,\n\n") },
     ])]) },
     { test: /\b(pause|cancel|skip|holiday|stop|change|upgrade|downgrade|switch)\b/i, reply: () => botSay(["To **pause, skip, upgrade or cancel** your plan, raise a request and our team will confirm the change.", linkRow([{ label: "🧾 Raise a request", href: "#ticket-plan", primary: true }])]) },
-    { test: /elite/i, reply: () => botSay([`✦ **Elite · ${inr(12570)}/month** (≈ ${inr(419)}/day)\nHealth-focused meals, **higher protein**, **low-oil** preparation, plus raita and a sweet.`, linkRow([{ label: "View Elite plan", href: "plan.html?plan=elite", primary: true }])]) },
-    { test: /premium/i, reply: () => botSay([`👑 **Premium · ${inr(8970)}/month** (≈ ${inr(299)}/day) — our **most popular** plan.\nDaily **paneer or mushroom specials** and greater variety.`, linkRow([{ label: "View Premium plan", href: "plan.html?plan=premium", primary: true }])]) },
-    { test: /regular|basic|cheap/i, reply: () => botSay([`🌿 **Regular · ${inr(6300)}/month** (≈ ${inr(210)}/day)\nSimple, wholesome **homestyle vegetarian** meals with seasonal vegetables.`, linkRow([{ label: "View Regular plan", href: "plan.html?plan=regular", primary: true }])]) },
+    ...PLANS.map((plan) => ({ test: new RegExp(plan.key === "regular" ? "regular|basic|cheap" : plan.key, "i"), reply: () => botSay([`${plan.icon} **${plan.name} · ${inr(plan.price)}/month** (≈ ${inr(plan.perDay)}/day)\n${plan.line}`, linkRow([{ label: `View ${plan.name} plan`, href: `plan.html?plan=${plan.key}`, primary: true }])]) })),
     { test: /veg|jain|onion|garlic|allerg|diet|protein|diabet|oil|gluten|health/i, reply: () => botSay(["All our meals are **100% vegetarian**. 🌱", "For **Jain, no onion-garlic, allergies or diet needs**, tell our team on WhatsApp and we’ll confirm what’s possible.", linkRow([{ label: "Ask about my diet", href: wa("Hi LunchLuxe, I have a dietary requirement: "), primary: true }])]) },
     { test: /plan|price|pricing|\bcost|subscri|month|\brates?\b|₹|\brs\b/i, reply: () => botSay(["All plans include **breakfast, lunch & dinner for 30 days**. Tap one to see details:", plansCard(), "Prices are illustrative — our team confirms the current price before you order."]) },
     { test: /\b(today|menu|food|dish(es)?|eat|breakfast|lunch|dinner)/i, reply: () => botSay([todayMenu(), linkRow([{ label: "See full week", href: "index.html#menu" }])]) },

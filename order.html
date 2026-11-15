@@ -1,0 +1,36 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="robots" content="noindex, nofollow" />
+    <title>Request a meal plan — LunchLuxe</title>
+    <link rel="icon" href="assets/lunchluxe-logo.png" />
+    <link rel="stylesheet" href="admin.css" />
+    <script src="api-config.js" defer></script>
+    <script src="catalog-client.js" defer></script>
+    <script src="order.js" defer></script>
+  </head>
+  <body>
+    <header class="topbar"><a href="index.html">LunchLuxe</a><span>Meal plan request</span></header>
+    <main>
+      <section class="panel">
+        <h1>Request a meal plan</h1>
+        <p>Choose your 30-day plan and tell us where you need delivery. Our team will confirm your address, start date and availability before any payment. No payment is collected here.</p>
+        <p id="order-status" role="status" aria-live="polite"></p>
+        <form id="order-form" class="form-grid" hidden>
+          <label>Plan<select name="plan" required></select></label>
+          <p id="order-price" aria-live="polite"></p>
+          <label>Full name<input name="customerName" maxlength="120" autocomplete="name" required /></label>
+          <label>Phone<input name="phone" type="tel" maxlength="20" autocomplete="tel" required /></label>
+          <label>Email<input name="email" type="email" maxlength="254" autocomplete="email" required /></label>
+          <label>PIN code<input name="pin" inputmode="numeric" pattern="[0-9]{6}" maxlength="6" autocomplete="postal-code" required /></label>
+          <label>Requested start date<input name="startDate" type="date" required /></label>
+          <label class="wide">Delivery address<textarea name="address" maxlength="500" autocomplete="street-address" required></textarea></label>
+          <button type="submit">Send request</button>
+        </form>
+        <p><a href="index.html#plans">Back to meal plans</a></p>
+      </section>
+    </main>
+  </body>
+</html>

@@ -34,15 +34,6 @@
         "description": "Fresh vegetarian tiffin and monthly meal plans with breakfast, lunch and dinner delivered in Bhubaneswar.",
         "email": "Orders@lunchluxe.com",
         "servesCuisine": "Vegetarian",
-        "hasOfferCatalog": {
-          "@type": "OfferCatalog",
-          "name": "Monthly vegetarian meal plans",
-          "itemListElement": [
-            { "@type": "Offer", "url": "https://lunchluxe.com/plan.html?plan=regular", "itemOffered": { "@type": "Service", "name": "Regular Vegetarian Meal Plan" } },
-            { "@type": "Offer", "url": "https://lunchluxe.com/plan.html?plan=premium", "itemOffered": { "@type": "Service", "name": "Premium Vegetarian Meal Plan" } },
-            { "@type": "Offer", "url": "https://lunchluxe.com/plan.html?plan=elite", "itemOffered": { "@type": "Service", "name": "Elite Vegetarian Meal Plan" } }
-          ]
-        },
         "areaServed": {
           "@type": "City",
           "name": "Bhubaneswar"
@@ -67,12 +58,12 @@
           {
             "@type": "Question",
             "name": "How much do LunchLuxe meal plans cost?",
-            "acceptedAnswer": { "@type": "Answer", "text": "The site displays illustrative monthly prices for Regular, Premium and Elite plans. Prices and inclusions can change, so confirm current details with LunchLuxe before ordering." }
+            "acceptedAnswer": { "@type": "Answer", "text": "The site displays monthly plan prices. Prices and inclusions can change, so confirm current details with LunchLuxe before ordering." }
           },
           {
             "@type": "Question",
             "name": "How can I enquire about a LunchLuxe plan?",
-            "acceptedAnswer": { "@type": "Answer", "text": "Choose Regular, Premium or Elite and use the enquiry option on its plan page to contact LunchLuxe. The website does not create an order or process payment." }
+            "acceptedAnswer": { "@type": "Answer", "text": "Choose a plan and use the request or enquiry option. LunchLuxe confirms delivery and availability before payment; the website does not process payments." }
           }
         ]
       }
@@ -96,9 +87,11 @@
     <link rel="stylesheet" href="chatbot.css?v=6" />
     <link rel="stylesheet" href="intro.css?v=5" />
     <script src="menu.js?v=1" defer></script>
-    <script src="script.js?v=25" defer></script>
+    <script src="api-config.js" defer></script>
+    <script src="catalog-client.js" defer></script>
+    <script src="script.js?v=26" defer></script>
     <script src="enhance.js?v=2" defer></script>
-    <script src="chatbot.js?v=6" defer></script>
+    <script src="chatbot.js?v=7" defer></script>
     <script src="intro.js?v=1" defer></script>
   </head>
   <body>
@@ -307,7 +300,7 @@
               </div>
               <span class="step-num">01</span>
               <h3>Choose your plan</h3>
-              <p>Pick <strong>Regular, Premium or Elite</strong> — whatever fits your appetite and lifestyle.</p>
+              <p>Pick <strong>the meal plan</strong> that fits your appetite and lifestyle.</p>
             </article>
 
             <article class="step" data-reveal style="--delay:.2s">
@@ -337,7 +330,7 @@
           </header>
 
           <div class="plan-grid">
-            <article class="plan-card" data-reveal style="--delay:.05s" data-tilt>
+            <article class="plan-card" data-plan-key="regular" data-reveal style="--delay:.05s" data-tilt>
               <div class="plan-media"><img src="https://images.unsplash.com/photo-1589301760014-d929f3979dbc?auto=format&fit=crop&w=700&q=80" alt="" loading="lazy" /></div>
               <div class="plan-body">
                 <div class="plan-top"><span class="plan-icon">🌿</span><div><h3>Regular</h3><p>Simple. Wholesome. Everyday.</p></div></div>
@@ -348,7 +341,7 @@
               </div>
             </article>
 
-            <article class="plan-card plan-featured" data-reveal style="--delay:.15s" data-tilt>
+            <article class="plan-card plan-featured" data-plan-key="premium" data-reveal style="--delay:.15s" data-tilt>
               <span class="plan-badge">★ Most popular</span>
               <div class="plan-media"><img src="https://images.unsplash.com/photo-1567188040759-fb8a883dc6d8?auto=format&fit=crop&w=700&q=80" alt="" loading="lazy" /></div>
               <div class="plan-body">
@@ -360,7 +353,7 @@
               </div>
             </article>
 
-            <article class="plan-card" data-reveal style="--delay:.25s" data-tilt>
+            <article class="plan-card" data-plan-key="elite" data-reveal style="--delay:.25s" data-tilt>
               <div class="plan-media"><img src="https://images.unsplash.com/photo-1565557623262-b51c2513a641?auto=format&fit=crop&w=700&q=80" alt="" loading="lazy" /></div>
               <div class="plan-body">
                 <div class="plan-top"><span class="plan-icon">✦</span><div><h3>Elite</h3><p>For your health. For your goals.</p></div></div>
@@ -487,11 +480,11 @@
             </details>
             <details>
               <summary>How much do LunchLuxe meal plans cost?</summary>
-              <p>The site displays illustrative monthly prices for Regular, Premium and Elite plans. Prices and inclusions can change; confirm current details with LunchLuxe before ordering.</p>
+              <p>The site displays monthly plan prices. Prices and inclusions can change; confirm current details with LunchLuxe before ordering.</p>
             </details>
             <details>
               <summary>How can I enquire about a LunchLuxe plan?</summary>
-              <p>Choose Regular, Premium or Elite and use the enquiry option on its plan page to contact LunchLuxe. The website does not create an order or process payment.</p>
+              <p>Choose a plan and use the request or enquiry option. LunchLuxe confirms delivery and availability before payment; the website does not process payments.</p>
             </details>
           </div>
         </div>

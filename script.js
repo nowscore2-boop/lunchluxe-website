@@ -1,3 +1,21 @@
+(async () => {
+const currentCatalog = await window.LuxeCatalogReady;
+if (currentCatalog) {
+  document.querySelectorAll("[data-plan-key]").forEach((card) => {
+    const plan = currentCatalog.plans[card.dataset.planKey];
+    card.querySelector(".plan-top h3").textContent = plan.type;
+    card.querySelector(".plan-top p").textContent = plan.tagline;
+    card.querySelector(".plan-price strong").textContent = `₹${plan.price.toLocaleString("en-IN")}`;
+    card.querySelector(".plan-per-day b").textContent = `₹${(plan.price / 30).toLocaleString("en-IN")} a day`;
+    card.querySelector("a.button").firstChild.textContent = `Choose ${plan.type} `;
+    const benefits = card.querySelector(".check-list");
+    benefits.replaceChildren(...plan.benefits.map((benefit) => {
+      const item = document.createElement("li");
+      item.textContent = benefit;
+      return item;
+    }));
+  });
+}
 const menuToggle = document.querySelector(".menu-toggle");
 const mainNav = document.querySelector(".main-nav");
 
@@ -168,3 +186,4 @@ if (menuLib) {
     },
   });
 }
+})();

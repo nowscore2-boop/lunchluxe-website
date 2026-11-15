@@ -2,4 +2,5 @@
 *.log
 .env
 .env.*
+!backend/.env.example
 node_modules/
