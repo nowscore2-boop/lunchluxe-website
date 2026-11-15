@@ -5,6 +5,7 @@ import cors from "cors";
 import helmet from "helmet";
 import { rateLimit } from "express-rate-limit";
 import { InputError, choice, date, integer, text, validateCatalog } from "./validation.js";
+import { inventoryItem, readWorkbook, writeWorkbook } from "./inventory.js";
 
 const scrypt = promisify(scryptCallback);
 const digest = (token) => createHash("sha256").update(token).digest("hex");
@@ -97,9 +98,30 @@ export function createApp(pool, config) {
     if (!result.rowCount) return res.status(409).json({ error: "Catalog changed elsewhere. Reload before saving." });
     res.json(result.rows[0]);
   }));
-  app.get("/api/admin/orders", asyncRoute(async (_req, res) => {
-    const offset = integer(Number(_req.query.offset ?? 0), "Offset", 0, 10000000);
-    const result = await pool.query("SELECT o.*, o.start_date::text AS start_date FROM luxe_orders o ORDER BY o.id DESC LIMIT 51 OFFSET $1", [offset]);
+  app.get("/api/admin/overview", asyncRoute(async (_req, res) => {
+    const result = await pool.query(`SELECT
+      (SELECT count(*)::int FROM luxe_orders WHERE status = 'pending') AS pending_orders,
+      (SELECT count(*)::int FROM luxe_orders) AS total_orders,
+      (SELECT count(*)::int FROM luxe_employees WHERE status = 'active') AS active_employees,
+      (SELECT count(*)::int FROM luxe_inventory WHERE quantity <= reorder_level) AS low_stock,
+      (SELECT COALESCE(sum(amount_paise), 0)::text FROM luxe_finance WHERE kind = 'income') AS income_paise,
+      (SELECT COALESCE(sum(amount_paise), 0)::text FROM luxe_finance WHERE kind = 'expense') AS expense_paise`);
+    res.json(result.rows[0]);
+  }));
+  app.get("/api/admin/customers", asyncRoute(async (req, res) => {
+    const offset = integer(Number(req.query.offset ?? 0), "Offset", 0, 10000000);
+    const result = await pool.query(`SELECT DISTINCT ON (phone) customer_name, phone, email, address, pin,
+      count(*) OVER (PARTITION BY phone)::int AS order_count, created_at
+      FROM luxe_orders ORDER BY phone, created_at DESC, id DESC LIMIT 51 OFFSET $1`, [offset]);
+    res.json({ items: result.rows.slice(0, 50), hasMore: result.rows.length > 50 });
+  }));
+  app.get("/api/admin/orders", asyncRoute(async (req, res) => {
+    const offset = integer(Number(req.query.offset ?? 0), "Offset", 0, 10000000);
+    const query = text(req.query.q ?? "", "Search", 120, false);
+    const status = req.query.status ? choice(req.query.status, "order status", ["pending", "approved", "rejected", "completed", "cancelled"]) : "";
+    const result = await pool.query(`SELECT o.*, o.start_date::text AS start_date FROM luxe_orders o
+      WHERE ($2 = '' OR status = $2) AND ($3 = '' OR position(lower($3) in lower(concat_ws(' ', id::text, customer_name, phone, email, plan_name))) > 0)
+      ORDER BY o.id DESC LIMIT 51 OFFSET $1`, [offset, status, query]);
     res.json({ items: result.rows.slice(0, 50), hasMore: result.rows.length > 50 });
   }));
   app.patch("/api/admin/orders/:id", asyncRoute(async (req, res) => {
@@ -162,6 +184,52 @@ export function createApp(pool, config) {
       [integer(Number(b.employeeId), "Employee", 1, Number.MAX_SAFE_INTEGER), date(b.recordDate, "Date"), kind, text(b.details, "Details", 500), amount],
     );
     res.status(201).json(result.rows[0]);
+  }));
+  app.get("/api/admin/suppliers", asyncRoute(async (_req, res) => {
+    const result = await pool.query("SELECT * FROM luxe_suppliers ORDER BY name, id");
+    res.json(result.rows);
+  }));
+  app.post("/api/admin/suppliers", asyncRoute(async (req, res) => {
+    const b = req.body || {};
+    const result = await pool.query("INSERT INTO luxe_suppliers (name, phone, email, notes) VALUES ($1,$2,$3,$4) RETURNING id",
+      [text(b.name, "Name", 120), text(b.phone || "", "Phone", 30, false), text(b.email || "", "Email", 254, false), text(b.notes || "", "Notes", 500, false)]);
+    res.status(201).json(result.rows[0]);
+  }));
+  app.patch("/api/admin/suppliers/:id", asyncRoute(async (req, res) => {
+    const id = integer(Number(req.params.id), "Supplier ID", 1, Number.MAX_SAFE_INTEGER);
+    const b = req.body || {};
+    const result = await pool.query("UPDATE luxe_suppliers SET name=$1, phone=$2, email=$3, notes=$4 WHERE id=$5 RETURNING id",
+      [text(b.name, "Name", 120), text(b.phone || "", "Phone", 30, false), text(b.email || "", "Email", 254, false), text(b.notes || "", "Notes", 500, false), id]);
+    if (!result.rowCount) return res.status(404).json({ error: "Supplier not found." });
+    res.json(result.rows[0]);
+  }));
+  app.get("/api/admin/inventory", asyncRoute(async (_req, res) => {
+    const result = await pool.query("SELECT i.*, s.name AS supplier_name FROM luxe_inventory i LEFT JOIN luxe_suppliers s ON s.id=i.supplier_id ORDER BY i.name, i.code");
+    res.json(result.rows);
+  }));
+  app.put("/api/admin/inventory/:code", asyncRoute(async (req, res) => {
+    const item = inventoryItem({ ...req.body, code: req.params.code });
+    await pool.query(`INSERT INTO luxe_inventory (code,name,unit,quantity,reorder_level,supplier_id)
+      VALUES ($1,$2,$3,$4,$5,$6) ON CONFLICT (code) DO UPDATE SET name=EXCLUDED.name, unit=EXCLUDED.unit,
+      quantity=EXCLUDED.quantity, reorder_level=EXCLUDED.reorder_level, supplier_id=EXCLUDED.supplier_id, updated_at=now()`,
+    [item.code, item.name, item.unit, item.quantity, item.reorderLevel, item.supplierId]);
+    res.json({ code: item.code });
+  }));
+  app.get("/api/admin/inventory.xlsx", asyncRoute(async (_req, res) => {
+    const result = await pool.query("SELECT code,name,unit,quantity,reorder_level,supplier_id FROM luxe_inventory ORDER BY code LIMIT 1001");
+    if (result.rows.length > 1000) throw new InputError("Export is limited to 1,000 items.");
+    const buffer = await writeWorkbook(result.rows);
+    res.type("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet");
+    res.set("Content-Disposition", 'attachment; filename="lunchluxe-inventory.xlsx"').send(Buffer.from(buffer));
+  }));
+  app.post("/api/admin/inventory/import", express.raw({ type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", limit: "2mb" }), asyncRoute(async (req, res) => {
+    const items = await readWorkbook(req.body);
+    await pool.query(`INSERT INTO luxe_inventory (code,name,unit,quantity,reorder_level,supplier_id)
+      SELECT code,name,unit,quantity::numeric,"reorderLevel"::numeric,NULLIF("supplierId",'')::bigint
+      FROM jsonb_to_recordset($1::jsonb) AS x(code text,name text,unit text,quantity text,"reorderLevel" text,"supplierId" text)
+      ON CONFLICT (code) DO UPDATE SET name=EXCLUDED.name,unit=EXCLUDED.unit,quantity=EXCLUDED.quantity,
+      reorder_level=EXCLUDED.reorder_level,supplier_id=EXCLUDED.supplier_id,updated_at=now()`, [JSON.stringify(items)]);
+    res.json({ imported: items.length });
   }));
   app.use((error, _req, res, _next) => {
     if (error instanceof InputError) return res.status(400).json({ error: error.message });

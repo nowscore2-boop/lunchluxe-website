@@ -1,6 +1,6 @@
 (async () => {
   const currentCatalog = await window.LuxeCatalogReady;
-  const WHATSAPP = "91911414115";
+  const WHATSAPP = "919114141115";
   const EMAIL = "Orders@lunchluxe.com";
   const STORE_KEY = "lunchluxe-tickets";
   const menuLib = window.LunchLuxeMenu;

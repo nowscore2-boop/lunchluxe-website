@@ -112,7 +112,7 @@ const plan = planKey ? planCatalog[planKey] : undefined;
 const menuLib = window.LunchLuxeMenu;
 const whatsappHref = menuLib
   ? menuLib.whatsappHref
-  : (message) => `https://wa.me/91911414115?text=${encodeURIComponent(message)}`;
+  : (message) => `https://wa.me/919114141115?text=${encodeURIComponent(message)}`;
 
 function setButton(button, label, href) {
   if (!button) return;

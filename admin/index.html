@@ -1,0 +1,206 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="robots" content="noindex, nofollow" />
+    <title>LunchLuxe Back Office</title>
+    <link rel="icon" href="/assets/lunchluxe-logo.png" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Playfair+Display:ital,wght@0,500;0,600;1,500&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="/admin.css?v=3" />
+    <script src="/api-config.js" defer></script>
+    <script src="/admin.js?v=2" defer></script>
+  </head>
+  <body class="admin-page">
+    <header class="topbar">
+      <a class="admin-brand" href="/" aria-label="LunchLuxe home"><img src="/assets/lunchluxe-logo.png" alt="LunchLuxe" /></a>
+      <span class="topbar-label">Back office</span>
+      <button id="logout" type="button" hidden>Sign out <span aria-hidden="true">↗</span></button>
+    </header>
+    <main>
+      <p id="notice" role="status" aria-live="polite"></p>
+      <section id="login-panel" class="panel">
+        <div class="login-intro">
+          <p class="admin-eyebrow"><span class="admin-dot"></span> THE LUNCHLUXE BACK OFFICE</p>
+          <h1>Good food starts <em>behind the scenes.</em></h1>
+          <p>A thoughtful space to manage the meals, people and details that make every day a little more homely.</p>
+          <div class="login-image"><img src="/assets/lunchluxe-hero.png" alt="" /><span>Homely food. Everyday.</span></div>
+        </div>
+        <div class="login-content">
+          <p class="admin-eyebrow">WELCOME BACK</p>
+          <h2>Administrator sign in</h2>
+          <p>Access is restricted to the LunchLuxe administrator.</p>
+          <form id="login-form" class="form-grid">
+            <label>Username<input name="username" autocomplete="username" required /></label>
+            <label>Password<input name="password" type="password" autocomplete="current-password" required /></label>
+            <button type="submit">Sign in <span aria-hidden="true">→</span></button>
+          </form>
+          <p class="login-footer">A little care goes a long way. <span aria-hidden="true">✦</span></p>
+        </div>
+      </section>
+      <div id="dashboard" hidden>
+        <div class="dashboard-heading">
+          <div>
+            <p class="admin-eyebrow"><span class="admin-dot"></span> YOUR LUNCHLUXE WORKSPACE</p>
+            <h1>Everything in its <em>right place.</em></h1>
+            <p>Manage your menu, orders and team, all in one place.</p>
+          </div>
+          <span class="workspace-badge"><span aria-hidden="true">✦</span> Made for the everyday</span>
+        </div>
+        <nav class="tabs" aria-label="Back office sections">
+          <button type="button" data-tab="overview"><span aria-hidden="true">✦</span> Overview</button>
+          <button type="button" data-tab="catalog"><span aria-hidden="true">☘</span> Plans and menu</button>
+          <button type="button" data-tab="orders"><span aria-hidden="true">▤</span> Orders</button>
+          <button type="button" data-tab="customers"><span aria-hidden="true">♧</span> Customers</button>
+          <button type="button" data-tab="finance"><span aria-hidden="true">◈</span> Finance</button>
+          <button type="button" data-tab="staff"><span aria-hidden="true">♧</span> Employees</button>
+          <button type="button" data-tab="inventory"><span aria-hidden="true">▦</span> Inventory</button>
+          <button type="button" data-tab="suppliers"><span aria-hidden="true">◇</span> Suppliers</button>
+        </nav>
+        <section id="overview" class="page panel" hidden>
+          <h2>Your business at a glance</h2>
+          <p>Current totals from order requests, manual finance entries and inventory.</p>
+          <div id="overview-cards" class="overview-grid"></div>
+          <p>Income and expenses are manually recorded. Order requests are not payments.</p>
+        </section>
+        <section id="catalog" class="page panel">
+          <h2>Plans and menu</h2>
+          <p>Changes appear on the website after visitors reload. Plan totals are calculated from the three daily meal prices over 30 days.</p>
+          <form id="plan-form" class="form-grid">
+            <label>Plan<select name="key" id="plan-select"><option value="regular">Regular</option><option value="premium">Premium</option><option value="elite">Elite</option></select></label>
+            <label>Plan name<input name="name" maxlength="80" required /></label>
+            <label>Tagline<input name="tagline" maxlength="300" required /></label>
+            <label class="wide">Description<textarea name="description" maxlength="300" required></textarea></label>
+            <label class="wide">Weekly menu description<input name="note" maxlength="300" required /></label>
+            <label class="wide">Plan benefits (comma-separated)<input name="benefits" required /></label>
+            <label class="wide">Plan highlight text (optional)<input name="stamp" maxlength="300" /></label>
+            <label>Breakfast price / day (₹)<input name="breakfast" type="number" min="0" max="100000" step="1" required /></label>
+            <label>Lunch price / day (₹)<input name="lunch" type="number" min="0" max="100000" step="1" required /></label>
+            <label>Dinner price / day (₹)<input name="dinner" type="number" min="0" max="100000" step="1" required /></label>
+            <button type="submit">Save plan</button>
+          </form>
+          <hr />
+          <h3>Weekly meals</h3>
+          <p>Separate multiple dishes with commas.</p>
+          <form id="menu-form" class="form-grid">
+            <label>Day<select name="day" id="day-select"><option>Monday</option><option>Tuesday</option><option>Wednesday</option><option>Thursday</option><option>Friday</option><option>Saturday</option><option>Sunday</option></select></label>
+            <label>Breakfast<input name="breakfast" required /></label>
+            <label>Lunch<input name="lunch" required /></label>
+            <label>Dinner<input name="dinner" required /></label>
+            <label>Premium lunch special<input name="premium" required /></label>
+            <label>Elite breakfast extra<input name="eliteBreakfast" required /></label>
+            <label>Elite lunch extras<input name="eliteLunch" required /></label>
+            <label>Elite dinner extra<input name="eliteDinner" required /></label>
+            <button type="submit">Save day</button>
+          </form>
+          <hr />
+          <h3>Add-ons</h3>
+          <p>Select an item to edit it, or add a new item. Prices are per delivery.</p>
+          <div id="addons-list" class="records"></div>
+          <form id="addon-form" class="form-grid">
+            <input name="originalId" type="hidden" />
+            <label>Item ID (lowercase, numbers, hyphens)<input name="id" maxlength="50" pattern="[a-z0-9-]+" required /></label>
+            <label>Name<input name="name" maxlength="100" required /></label>
+            <label>Size<input name="size" maxlength="100" required /></label>
+            <label>Category<input name="category" maxlength="100" required /></label>
+            <label>Icon<input name="icon" maxlength="100" value="🍽" required /></label>
+            <label>Price (₹)<input name="price" type="number" min="0" max="100000" step="1" required /></label>
+            <div class="actions"><button type="submit">Save item</button><button type="button" id="addon-clear" class="secondary">New item</button></div>
+          </form>
+        </section>
+        <section id="orders" class="page panel" hidden>
+          <h2>Order requests</h2>
+          <p>Check the address and confirm delivery with the customer before approving. No online payment is collected.</p>
+          <form id="order-search-form" class="form-grid">
+            <label>Search by order, customer, phone, email or plan<input name="query" maxlength="120" type="search" /></label>
+            <label>Status<select name="status"><option value="">All statuses</option><option value="pending">Pending</option><option value="approved">Approved</option><option value="rejected">Rejected</option><option value="completed">Completed</option><option value="cancelled">Cancelled</option></select></label>
+            <button type="submit">Search orders</button>
+          </form>
+          <div id="orders-list" class="records"></div>
+        </section>
+        <section id="customers" class="page panel" hidden>
+          <h2>Customers</h2>
+          <p>Customers are grouped by the phone number provided in order requests. Contact details are taken from their latest request.</p>
+          <div id="customers-list" class="records"></div>
+        </section>
+        <section id="finance" class="page panel" hidden>
+          <h2>Finance</h2>
+          <p>Record income and expenses manually. Entries are not automatically imported from orders or salary records; enter each payment once.</p>
+          <p id="finance-totals"></p>
+          <form id="finance-form" class="form-grid">
+            <label>Date<input name="entryDate" type="date" required /></label>
+            <label>Type<select name="kind"><option value="income">Income</option><option value="expense">Expense</option></select></label>
+            <label>Category<input name="category" maxlength="100" required /></label>
+            <label>Amount (₹)<input name="amount" type="number" min="0.01" max="1000000" step="0.01" required /></label>
+            <label>Order ID (optional)<input name="orderId" type="number" min="1" step="1" /></label>
+            <label class="wide">Description<input name="description" maxlength="500" /></label>
+            <button type="submit">Add entry</button>
+          </form>
+          <h3>Recent entries</h3><div id="finance-list" class="records"></div>
+        </section>
+        <section id="staff" class="page panel" hidden>
+          <h2>Employees</h2>
+          <p>Record staff details, attendance, leave, shifts and salary payments. Payroll calculations and statutory deductions are not provided.</p>
+          <form id="employee-form" class="form-grid">
+            <input name="id" type="hidden" />
+            <label>Name<input name="name" maxlength="120" required /></label>
+            <label>Role<input name="role" maxlength="120" required /></label>
+            <label>Phone<input name="phone" maxlength="20" /></label>
+            <label>Monthly salary (₹)<input name="salary" type="number" min="0" max="1000000" step="0.01" required /></label>
+            <label>Status<select name="status"><option value="active">Active</option><option value="inactive">Inactive</option></select></label>
+            <div class="actions"><button type="submit">Save employee</button><button type="button" id="employee-clear" class="secondary">New employee</button></div>
+          </form>
+          <div id="employee-list" class="records"></div>
+          <h3>Attendance, leave, shifts and salary payments</h3>
+          <p>Salary payment records do not automatically add an expense to Finance.</p>
+          <form id="staff-record-form" class="form-grid">
+            <label>Employee<select name="employeeId" id="record-employee" required></select></label>
+            <label>Date<input name="recordDate" type="date" required /></label>
+            <label>Type<select name="kind" id="record-kind"><option value="attendance">Attendance</option><option value="leave">Leave</option><option value="shift">Shift</option><option value="salary_payment">Salary payment</option></select></label>
+            <label>Details<input name="details" maxlength="500" required /></label>
+            <label id="record-amount-label" hidden>Salary paid (₹)<input name="amount" type="number" min="0.01" max="1000000" step="0.01" /></label>
+            <button type="submit">Add record</button>
+          </form>
+          <div id="staff-record-list" class="records"></div>
+        </section>
+        <section id="inventory" class="page panel" hidden>
+          <h2>Inventory</h2>
+          <p>Manually track stock. Quantities are not deducted automatically by orders, and inventory changes do not create finance entries.</p>
+          <form id="inventory-form" class="form-grid">
+            <label>Item code<input name="code" maxlength="50" pattern="[A-Za-z0-9][A-Za-z0-9_-]*" required /></label>
+            <label>Item name<input name="name" maxlength="120" required /></label>
+            <label>Unit (e.g. kg, litre, pcs)<input name="unit" maxlength="30" required /></label>
+            <label>Quantity<input name="quantity" type="number" min="0" max="999999999.999" step="0.001" required /></label>
+            <label>Low-stock threshold<input name="reorderLevel" type="number" min="0" max="999999999.999" step="0.001" required /></label>
+            <label>Supplier<select name="supplierId" id="inventory-supplier"><option value="">No supplier</option></select></label>
+            <div class="actions"><button type="submit">Save item</button><button type="button" id="inventory-clear" class="secondary">New item</button></div>
+          </form>
+          <h3>Excel import and export</h3>
+          <p>Download the workbook, edit the Inventory sheet and upload it again. Imports replace quantities and details for matching item codes, add new items and leave other items unchanged. Supplier IDs must already exist. Maximum 1,000 items per workbook.</p>
+          <div class="actions"><button id="inventory-export" type="button" class="secondary">Download Excel / template</button></div>
+          <form id="inventory-import-form" class="form-grid">
+            <label>Excel workbook (.xlsx, max 2 MB)<input name="workbook" type="file" accept=".xlsx,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" required /></label>
+            <button type="submit">Import workbook</button>
+          </form>
+          <h3>Stock items</h3>
+          <div id="inventory-list" class="records"></div>
+        </section>
+        <section id="suppliers" class="page panel" hidden>
+          <h2>Suppliers</h2>
+          <p>Keep supplier contact details here and link them to stock items.</p>
+          <form id="supplier-form" class="form-grid">
+            <input name="id" type="hidden" />
+            <label>Name<input name="name" maxlength="120" required /></label>
+            <label>Phone<input name="phone" maxlength="30" /></label>
+            <label>Email<input name="email" type="email" maxlength="254" /></label>
+            <label class="wide">Notes<input name="notes" maxlength="500" /></label>
+            <div class="actions"><button type="submit">Save supplier</button><button type="button" id="supplier-clear" class="secondary">New supplier</button></div>
+          </form>
+          <div id="suppliers-list" class="records"></div>
+        </section>
+      </div>
+    </main>
+  </body>
+</html>

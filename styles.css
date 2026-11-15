@@ -69,6 +69,8 @@ h1, h2, h3, p { margin-top: 0; }
 .scribble { position: absolute; right: 0; bottom: -7px; left: 0; width: 100%; height: 12px; fill: none; stroke: #d99a36; stroke-linecap: round; stroke-width: 5px; }
 .hero-title .line:last-child > span { position: relative; }
 .hero-lead { max-width: 465px; margin: 0 0 22px; color: #596054; font-size: 15px; line-height: 1.7; }
+.kitchen-trust { width: fit-content; margin: 0 0 12px; padding: 8px 14px; border: 1px solid #c8dcae; border-radius: 999px; background: #f1f6e9; color: #365719; font-size: 13px; font-weight: 700; }
+.kitchen-trust span { margin-right: 5px; color: var(--green); font-weight: 800; }
 .hero-ctas { display: flex; flex-wrap: wrap; gap: 10px; }
 .hero-stats { margin: 34px 0 0; padding: 18px 0 0; border-top: 1px solid #d7d6ca; display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; list-style: none; }
 .hero-stats li { display: flex; align-items: center; gap: 8px; color: #73786e; font-size: 10px; line-height: 1.3; }

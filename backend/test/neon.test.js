@@ -3,6 +3,7 @@ import assert from "node:assert/strict";
 import { randomBytes, scryptSync } from "node:crypto";
 import { readFile } from "node:fs/promises";
 import pg from "pg";
+import ExcelJS from "exceljs";
 import { createApp } from "../app.js";
 import { initialCatalog } from "./catalog-fixture.js";
 
@@ -73,6 +74,10 @@ test("API isolates private records and saves catalog, orders, finance and employ
     assert.equal(secondPage.data.items.length, 1);
     assert.equal(secondPage.data.hasMore, false);
     assert.equal((await request(`/api/admin/orders/${created.data.id}`, "PATCH", { status: "approved" })).status, 200);
+    const filtered = await request("/api/admin/orders?status=approved&q=Test%20customer");
+    assert.equal(filtered.data.items.length, 1);
+    const customers = await request("/api/admin/customers");
+    assert.equal(customers.data.items[0].order_count, 51);
     assert.equal((await request("/api/admin/finance", "POST", { entryDate: "2030-01-01", kind: "income", category: "Plan", amountPaise: 660000, description: "", orderId: created.data.id })).status, 201);
     const finance = await request("/api/admin/finance");
     assert.equal(finance.data.totals[0].total_paise, "660000");
@@ -83,6 +88,39 @@ test("API isolates private records and saves catalog, orders, finance and employ
     const records = await request("/api/admin/employee-records");
     assert.equal(records.data.items[0].employee_name, "Test employee");
     assert.equal(records.data.items[0].record_date, "2030-01-01");
+    const supplier = await request("/api/admin/suppliers", "POST", { name: "Test supplier", phone: "", email: "", notes: "" });
+    assert.equal(supplier.status, 201);
+    assert.equal((await request("/api/admin/inventory/RICE", "PUT", { name: "Rice", unit: "kg", quantity: "10.5", reorderLevel: "12", supplierId: supplier.data.id })).status, 200);
+    assert.equal((await request("/api/admin/overview")).data.low_stock, 1);
+    const exported = await fetch(`${base}/api/admin/inventory.xlsx`, { headers: { Authorization: `Bearer ${token}` } });
+    assert.equal(exported.status, 200);
+    const workbook = new ExcelJS.Workbook();
+    await workbook.xlsx.load(await exported.arrayBuffer());
+    const sheet = workbook.getWorksheet("Inventory");
+    assert.equal(sheet.getCell("A2").value, "RICE");
+    sheet.getCell("D2").value = 15;
+    sheet.addRow(["DAL", "Dal", "kg", 8, 3, ""]);
+    const imported = await fetch(`${base}/api/admin/inventory/import`, {
+      method: "POST",
+      headers: { Authorization: `Bearer ${token}`, "Content-Type": "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" },
+      body: await workbook.xlsx.writeBuffer(),
+    });
+    assert.equal(imported.status, 200);
+    assert.equal((await imported.json()).imported, 2);
+    const stock = await request("/api/admin/inventory");
+    assert.equal(stock.data.length, 2);
+    assert.equal(stock.data.find((item) => item.code === "RICE").quantity, "15.000");
+    const invalid = new ExcelJS.Workbook();
+    await invalid.xlsx.load(await workbook.xlsx.writeBuffer());
+    invalid.getWorksheet("Inventory").getCell("D2").value = -1;
+    const rejected = await fetch(`${base}/api/admin/inventory/import`, {
+      method: "POST",
+      headers: { Authorization: `Bearer ${token}`, "Content-Type": "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" },
+      body: await invalid.xlsx.writeBuffer(),
+    });
+    assert.equal(rejected.status, 400);
+    assert.match((await rejected.json()).error, /Row 2/);
+    assert.equal((await request("/api/admin/inventory")).data.find((item) => item.code === "RICE").quantity, "15.000");
     assert.equal((await request("/api/admin/logout", "POST")).status, 204);
     assert.equal((await request("/api/admin/employees")).status, 401);
   } finally {

@@ -9,7 +9,9 @@
   let catalog;
   let version;
   let employees = [];
-  const offsets = { orders: 0, finance: 0, staff: 0 };
+  const offsets = { orders: 0, customers: 0, finance: 0, staff: 0 };
+  let suppliers = [];
+  let inventory = [];
 
   function message(value, error = false) {
     notice.textContent = value;
@@ -32,7 +34,7 @@
   async function api(path, options = {}) {
     if (!base) throw new Error("The API is not configured. Set LUNCHLUXE_API_URL in api-config.js.");
     const headers = { ...options.headers };
-    if (options.body) headers["Content-Type"] = "application/json";
+    if (options.body && !headers["Content-Type"]) headers["Content-Type"] = "application/json";
     if (token) headers.Authorization = `Bearer ${token}`;
     const response = await fetch(`${base}${path}`, { ...options, headers, cache: "no-store" });
     const body = response.status === 204 ? null : await response.json();
@@ -97,8 +99,12 @@
     document.querySelectorAll(".page").forEach((page) => { page.hidden = page.id !== id; });
     document.querySelectorAll("[data-tab]").forEach((button) => button.setAttribute("aria-current", button.dataset.tab === id ? "page" : "false"));
   }
-  document.querySelectorAll("[data-tab]").forEach((button) => button.addEventListener("click", () => showTab(button.dataset.tab)));
-  showTab("catalog");
+  document.querySelectorAll("[data-tab]").forEach((button) => button.addEventListener("click", () => {
+    showTab(button.dataset.tab);
+    const refresh = { overview: refreshOverview, orders: refreshOrders, customers: refreshCustomers }[button.dataset.tab];
+    if (refresh) refresh().catch((error) => message(error.message, true));
+  }));
+  showTab("overview");
 
   forms["login-form"].addEventListener("submit", (event) => {
     event.preventDefault();
@@ -232,7 +238,9 @@
   });
 
   async function refreshOrders() {
-    const orders = await api(`/api/admin/orders?offset=${offsets.orders}`);
+    const form = forms["order-search-form"];
+    const params = new URLSearchParams({ offset: String(offsets.orders), q: field(form, "query").value, status: field(form, "status").value });
+    const orders = await api(`/api/admin/orders?${params}`);
     const root = document.querySelector("#orders-list");
     renderEmpty(root, orders.items.map((order) => {
       const node = record([
@@ -249,12 +257,47 @@
       });
       node.append(select, recordButton("Update status", async () => {
         await api(`/api/admin/orders/${order.id}`, { method: "PATCH", body: JSON.stringify({ status: select.value }) });
-        await refreshOrders();
+        await Promise.all([refreshOrders(), refreshOverview()]);
         message("Order status updated.");
       }));
-      renderPager(root, "orders", orders.hasMore, refreshOrders);
       return node;
     }));
+    renderPager(root, "orders", orders.hasMore, refreshOrders);
+  }
+  forms["order-search-form"].addEventListener("submit", (event) => {
+    event.preventDefault();
+    perform(event.currentTarget, async () => { offsets.orders = 0; await refreshOrders(); });
+  });
+  async function refreshOverview() {
+    const data = await api("/api/admin/overview");
+    const metrics = [
+      ["Pending requests", data.pending_orders],
+      ["All requests", data.total_orders],
+      ["Active employees", data.active_employees],
+      ["Low-stock items", data.low_stock],
+      ["Recorded income", money(data.income_paise)],
+      ["Recorded expenses", money(data.expense_paise)],
+    ];
+    document.querySelector("#overview-cards").replaceChildren(...metrics.map(([label, value]) => {
+      const card = document.createElement("article");
+      card.className = "overview-card";
+      const name = document.createElement("span");
+      name.textContent = label;
+      const number = document.createElement("strong");
+      number.textContent = String(value);
+      card.append(name, number);
+      return card;
+    }));
+  }
+  async function refreshCustomers() {
+    const result = await api(`/api/admin/customers?offset=${offsets.customers}`);
+    const root = document.querySelector("#customers-list");
+    renderEmpty(root, result.items.map((customer) => record([
+      `${customer.customer_name} · ${customer.order_count} request${customer.order_count === 1 ? "" : "s"}`,
+      `${customer.phone} · ${customer.email}`,
+      `${customer.address} · PIN ${customer.pin}`,
+    ])));
+    renderPager(root, "customers", result.hasMore, refreshCustomers);
   }
   async function refreshFinance() {
     const result = await api(`/api/admin/finance?offset=${offsets.finance}`);
@@ -272,7 +315,7 @@
     perform(event.currentTarget, async () => {
       const f = event.currentTarget;
       await api("/api/admin/finance", { method: "POST", body: JSON.stringify({ entryDate: field(f, "entryDate").value, kind: field(f, "kind").value, category: field(f, "category").value, amountPaise: paise(field(f, "amount").value), description: field(f, "description").value, orderId: field(f, "orderId").value }) });
-      f.reset(); offsets.finance = 0; await refreshFinance(); message("Finance entry saved.");
+      f.reset(); offsets.finance = 0; await Promise.all([refreshFinance(), refreshOverview()]); message("Finance entry saved.");
     });
   });
   function clearEmployee() { forms["employee-form"].reset(); field(forms["employee-form"], "id").value = ""; }
@@ -305,7 +348,7 @@
       const id = field(f, "id").value;
       const data = { name: field(f, "name").value, role: field(f, "role").value, phone: field(f, "phone").value, monthlySalaryPaise: paise(field(f, "salary").value), status: field(f, "status").value };
       await api(`/api/admin/employees${id ? `/${id}` : ""}`, { method: id ? "PATCH" : "POST", body: JSON.stringify(data) });
-      clearEmployee(); await refreshEmployees(); message("Employee saved.");
+      clearEmployee(); await Promise.all([refreshEmployees(), refreshOverview()]); message("Employee saved.");
     });
   });
   document.querySelector("#record-kind").addEventListener("change", (event) => {
@@ -332,8 +375,102 @@
       offsets.staff = 0; await refreshEmployeeRecords(); message("Employee record saved.");
     });
   });
+  function clearSupplier() { forms["supplier-form"].reset(); field(forms["supplier-form"], "id").value = ""; }
+  document.querySelector("#supplier-clear").addEventListener("click", clearSupplier);
+  async function refreshSuppliers() {
+    suppliers = await api("/api/admin/suppliers");
+    const select = document.querySelector("#inventory-supplier");
+    const selected = select.value;
+    const empty = document.createElement("option");
+    empty.value = ""; empty.textContent = "No supplier";
+    select.replaceChildren(empty, ...suppliers.map((supplier) => {
+      const option = document.createElement("option");
+      option.value = supplier.id; option.textContent = `${supplier.name} (#${supplier.id})`;
+      return option;
+    }));
+    if (suppliers.some((supplier) => String(supplier.id) === selected)) select.value = selected;
+    renderEmpty(document.querySelector("#suppliers-list"), suppliers.map((supplier) => {
+      const node = record([`${supplier.name} · ID #${supplier.id}`, [supplier.phone, supplier.email, supplier.notes].filter(Boolean).join(" · ") || "No contact details"]);
+      node.append(recordButton("Edit", () => {
+        const form = forms["supplier-form"];
+        ["id", "name", "phone", "email", "notes"].forEach((name) => { field(form, name).value = supplier[name]; });
+        form.scrollIntoView({ behavior: "smooth" });
+      }));
+      return node;
+    }));
+  }
+  forms["supplier-form"].addEventListener("submit", (event) => {
+    event.preventDefault();
+    perform(event.currentTarget, async () => {
+      const form = event.currentTarget;
+      const id = field(form, "id").value;
+      const data = Object.fromEntries(["name", "phone", "email", "notes"].map((name) => [name, field(form, name).value]));
+      await api(`/api/admin/suppliers${id ? `/${id}` : ""}`, { method: id ? "PATCH" : "POST", body: JSON.stringify(data) });
+      clearSupplier(); await Promise.all([refreshSuppliers(), refreshInventory()]); message("Supplier saved.");
+    });
+  });
+  function clearInventory() { forms["inventory-form"].reset(); field(forms["inventory-form"], "code").readOnly = false; }
+  document.querySelector("#inventory-clear").addEventListener("click", clearInventory);
+  async function refreshInventory() {
+    inventory = await api("/api/admin/inventory");
+    renderEmpty(document.querySelector("#inventory-list"), inventory.map((item) => {
+      const low = Number(item.quantity) <= Number(item.reorder_level);
+      const node = record([
+        `${item.name} · ${item.code}${low ? " · LOW STOCK" : ""}`,
+        `${item.quantity} ${item.unit} · Low-stock threshold ${item.reorder_level} ${item.unit}`,
+        item.supplier_name ? `Supplier: ${item.supplier_name} (#${item.supplier_id})` : "No supplier assigned",
+      ]);
+      if (low) node.classList.add("low-stock");
+      node.append(recordButton("Edit", () => {
+        const form = forms["inventory-form"];
+        ["code", "name", "unit", "quantity"].forEach((name) => { field(form, name).value = item[name]; });
+        field(form, "reorderLevel").value = item.reorder_level;
+        field(form, "supplierId").value = item.supplier_id || "";
+        field(form, "code").readOnly = true;
+        form.scrollIntoView({ behavior: "smooth" });
+      }));
+      return node;
+    }));
+  }
+  forms["inventory-form"].addEventListener("submit", (event) => {
+    event.preventDefault();
+    perform(event.currentTarget, async () => {
+      const form = event.currentTarget;
+      const code = field(form, "code").value.trim().toUpperCase();
+      if (!field(form, "code").readOnly && inventory.some((item) => item.code === code) && !confirm(`Update existing item ${code}?`)) return;
+      const data = Object.fromEntries(["name", "unit", "quantity", "reorderLevel", "supplierId"].map((name) => [name, field(form, name).value]));
+      await api(`/api/admin/inventory/${encodeURIComponent(code)}`, { method: "PUT", body: JSON.stringify(data) });
+      clearInventory(); await Promise.all([refreshInventory(), refreshOverview()]); message("Stock item saved.");
+    });
+  });
+  document.querySelector("#inventory-export").addEventListener("click", async (event) => {
+    event.currentTarget.disabled = true;
+    try {
+      const response = await fetch(`${base}/api/admin/inventory.xlsx`, { headers: { Authorization: `Bearer ${token}` }, cache: "no-store" });
+      if (!response.ok) {
+        const error = await response.json();
+        throw new Error(error.error || `Export failed (${response.status}).`);
+      }
+      const url = URL.createObjectURL(await response.blob());
+      const link = document.createElement("a");
+      link.href = url; link.download = "lunchluxe-inventory.xlsx"; link.click();
+      setTimeout(() => URL.revokeObjectURL(url), 1000);
+      message("Inventory workbook downloaded.");
+    } catch (error) { message(error.message, true); } finally { event.currentTarget.disabled = false; }
+  });
+  forms["inventory-import-form"].addEventListener("submit", (event) => {
+    event.preventDefault();
+    perform(event.currentTarget, async () => {
+      const form = event.currentTarget;
+      const file = field(form, "workbook").files[0];
+      if (!file || !file.name.toLowerCase().endsWith(".xlsx") || file.size > 2 * 1024 * 1024) throw new Error("Choose an .xlsx file smaller than 2 MB.");
+      if (!confirm("Import this workbook? Matching item codes will be overwritten.")) return;
+      const result = await api("/api/admin/inventory/import", { method: "POST", headers: { "Content-Type": "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" }, body: file });
+      form.reset(); await Promise.all([refreshInventory(), refreshOverview()]); message(`Imported ${result.imported} inventory item(s).`);
+    });
+  });
   async function refreshAll() {
-    await Promise.all([refreshCatalog(), refreshOrders(), refreshFinance(), refreshEmployees(), refreshEmployeeRecords()]);
+    await Promise.all([refreshCatalog(), refreshOrders(), refreshFinance(), refreshEmployees(), refreshEmployeeRecords(), refreshOverview(), refreshCustomers(), refreshSuppliers(), refreshInventory()]);
   }
   if (token) {
     api("/api/admin/session").then(() => { showSignedIn(true); return refreshAll(); }).catch((error) => message(error.message, true));

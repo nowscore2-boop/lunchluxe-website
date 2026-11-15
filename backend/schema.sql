@@ -56,3 +56,22 @@ CREATE TABLE IF NOT EXISTS luxe_employee_records (
   amount_paise integer CHECK (amount_paise IS NULL OR amount_paise >= 0),
   created_at timestamptz NOT NULL DEFAULT now()
 );
+
+CREATE TABLE IF NOT EXISTS luxe_suppliers (
+  id bigint GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
+  name text NOT NULL,
+  phone text NOT NULL DEFAULT '',
+  email text NOT NULL DEFAULT '',
+  notes text NOT NULL DEFAULT '',
+  created_at timestamptz NOT NULL DEFAULT now()
+);
+
+CREATE TABLE IF NOT EXISTS luxe_inventory (
+  code text PRIMARY KEY,
+  name text NOT NULL,
+  unit text NOT NULL,
+  quantity numeric(12, 3) NOT NULL CHECK (quantity >= 0),
+  reorder_level numeric(12, 3) NOT NULL CHECK (reorder_level >= 0),
+  supplier_id bigint REFERENCES luxe_suppliers(id),
+  updated_at timestamptz NOT NULL DEFAULT now()
+);

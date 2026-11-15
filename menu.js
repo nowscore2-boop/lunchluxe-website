@@ -1,5 +1,5 @@
 (() => {
-  const WHATSAPP_NUMBER = "91911414115";
+  const WHATSAPP_NUMBER = "919114141115";
 
   const tiers = {
     regular: { label: "Regular", note: "Everyday thali — rice, dal, two seasonal sabzis and phulka." },
